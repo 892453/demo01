@@ -13,7 +13,7 @@ function FindPass() {
     //const [isLoading,setIsLoading] = useState(false)
 
     const checkRegister = () => {
-
+        //test
         console.log("手机号：", userPhone)
         console.log("验证码：", VerCode)
         console.log("密码：", PassWord)
