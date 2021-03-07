@@ -39,7 +39,7 @@ function Register() {
     return (
         <div className="register-div">
 
-            <Card title="系统注册" bordered={true} style={{ width: 400 }}>
+            <Card title="系统注册" bordered={true} style={{ width: 400 ,textAlign:"center"}}>
                 <Input
                     id="userphone"
                     size="large"

@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import 'antd/dist/antd.css';
+import "./test.css"
+
 import { Card, Input ,Button ,Spin } from 'antd';
 import { KeyOutlined, UserOutlined} from '@ant-design/icons';
-import './login.css';
+
 
 function Login() {
     const [userName,setUserName] = useState("")
@@ -19,11 +20,20 @@ function Login() {
     }
 
     return (
-        <div className="test">
-            <div className="login-div">
+            <div className="main">
+            <div className="header-div">
+
+            </div>
+            <div className="body-div">
+
+            </div>
+            <div className="foot-div">
+
+            </div>
             
-            <Spin tip="loading..." spinning={isLoading}>
-                <Card title="系统登录" bordered={true} style={{width:400,textAlign:"center"}}>
+            
+            
+                {/* <Card title="系统登录" bordered={true} style={{width:400,textAlign:"center"}}>
                     <Input
                         id="username"
                         size="large"
@@ -44,10 +54,10 @@ function Login() {
                     <a href="findpass" style={{margin:"10px 40px",float:"right"}}>忘记密码</a>
                     <Button type="primary" size="large" block onClick={checkLogin}>登录</Button>
 
-                </Card>
-            </Spin>
+                </Card> */}
+           
 
-        </div>
+        
         </div>
     )
 } 

@@ -39,7 +39,7 @@ function FindPass() {
     return (
         <div className="findpass-div">
 
-            <Card title="找回密码" bordered={true} style={{ width: 400 }}>
+            <Card title="找回密码" bordered={true} style={{ width: 400,textAlign:"center"}}>
                 <Input
                     id="userphone"
                     size="large"
