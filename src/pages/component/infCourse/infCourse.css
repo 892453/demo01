@@ -1,0 +1,26 @@
+li,dd,dl{
+    list-style-type: none;
+    overflow: auto;
+    
+}
+.lili{
+    background: rgb(216, 213, 213);
+    width: 270px;
+    float: left;
+    margin: 20px 40px;
+    
+}
+.aaa{
+    overflow: auto;
+}
+.dlstyle{
+    width:240px;
+    margin:15px;
+    text-align:center;
+    overflow:auto;
+}
+.imgstyle{
+    height:170px;
+    width:270px;
+    display:block;
+}

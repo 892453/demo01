@@ -1,10 +1,14 @@
 import React, { useState } from 'react'
 import 'antd/dist/antd.css';
-import { Card, Input,Upload, Button, message } from 'antd';
-import { PhoneOutlined, VerifiedOutlined, KeyOutlined, UploadOutlined } from '@ant-design/icons';
+import { Card, Input,Upload, Button, message,Form,Select } from 'antd';
+
+import { PhoneOutlined, VerifiedOutlined, KeyOutlined, UploadOutlined ,CaretLeftFilled} from '@ant-design/icons';
 import './register.css';
+import bg2 from "../static/images/bg2.png"
 
 function Register() {
+
+    const { Option } = Select;
 
     const [userPhone, setuserPhone] = useState("")
     const [VerCode, setVerCode] = useState("")
@@ -32,18 +36,40 @@ function Register() {
             console.log(info.fileList);
         },
     };
+    const prefixSelector = (
+        <Form.Item name="prefix" noStyle>
+          <Select style={{ width: 70 }}>
+            <Option value="86">+86</Option>
+            {/* <Option value="87">+87</Option> */}
+          </Select>
+        </Form.Item>
+      );
     const clickvercode=()=>{
             console.log("获取验证码的手机号：",userPhone)
     }
 
     return (
         <div className="register-div">
+            {/* 顶部 */}
+            <div id="header">
+                <div className="head">
 
+                </div>
+            </div>
+
+            {/* 中间部分 */}
+            <div className="main">
+                <div className="return">
+                    <CaretLeftFilled />
+                    <a href="login">返回登陆</a>
+                </div>
+            <img src={bg2} style={{width:"100%",height:"720px"}} alt="bgtp"></img>
             <Card title="系统注册" bordered={true} style={{ width: 400 ,textAlign:"center"}}>
                 <Input
                     id="userphone"
                     size="large"
                     placeholder="输入注册手机号"
+                    addonBefore={prefixSelector} style={{ width: '100%' }}     //addonBefor设置标签
                     prefix={<PhoneOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
                     onChange={(e) => { setuserPhone(e.target.value) }}
                 />
@@ -79,6 +105,12 @@ function Register() {
                 <Button type="primary" size="large" block onClick={checkRegister}>注册</Button>
 
             </Card>
+            </div>
+
+            {/* 底部 */}
+            <div className="footer">
+
+            </div>
 
         </div>
     )
