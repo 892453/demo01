@@ -2,6 +2,7 @@ import React,{Component, useState} from 'react';
 import { Layout, Menu, Breadcrumb } from 'antd';
 import InfCourse from "../component/infCourse";
 import AddCourse from "../component/addCourse";
+import Concertration from "../component/lineChart"
 import "./home.css"
 import {
   DesktopOutlined,
@@ -32,11 +33,11 @@ function Home() {
         <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
           <div className="logo" />
           <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-            <Menu.Item key="1" icon={<PieChartOutlined />}>
+            <Menu.Item key="1" icon={<PieChartOutlined />} >
               Option 1
             </Menu.Item>
-            <Menu.Item key="2" icon={<DesktopOutlined />}>
-              Option 2
+            <Menu.Item key="2" icon={<DesktopOutlined />} onClick={()=>{setclicktype("concentration")}}>
+              专注度检测
             </Menu.Item>
             <SubMenu key="sub1" icon={<UserOutlined />} title="课程管理">
               <Menu.Item key="3" onClick={()=>{setclicktype("infCourse")}}>课程信息</Menu.Item>
@@ -69,11 +70,13 @@ function Home() {
             {(()=>{
               console.log("type:",clicktype)
                 switch(clicktype){
-                  case "infCourse":
+                  case "infCourse":   //课程信息界面
                     return (<InfCourse />)
-                  case "addCourse":
+                  case "addCourse":   //添加课程界面
                     return <AddCourse />;
-                  case "Device":
+                  case "concentration":  //专注度检测界面
+                    return <Concertration />
+                  case "Device":      //设备界面                  
                     return (<div>设备界面</div>);
                   default:
                     return <div>null</div>;
