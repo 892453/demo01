@@ -69,7 +69,7 @@ function Linechart() {
             }
             var int = setInterval(function () {
                 addnode()
-            }, 1000/5); //1000除的数字代表帧数，即每秒钟添加的点（更新的次数）
+            }, 1000/1); //1000除的数字代表帧数，即每秒钟添加的点（更新的次数）
         }
 
         //当有setstatus（）执行时，上一轮的useEfeect生命周期即将结束，执行return函数，clearInterval（int）清除设置的间隔执行

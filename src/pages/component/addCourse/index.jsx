@@ -3,34 +3,18 @@ import { Breadcrumb, Form, Input, Button, Upload, message } from 'antd';
 import {
     HighlightOutlined,
     InfoCircleOutlined,
-    LoadingOutlined,
-    PlusOutlined
+    UploadOutlined,
+    InboxOutlined,
 
 } from '@ant-design/icons';
 
-function getBase64(img, callback) {
-    const reader = new FileReader();
-    reader.addEventListener('load', () => callback(reader.result));
-    reader.readAsDataURL(img);
-}
-
-function beforeUpload(file) {
-    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-    if (!isJpgOrPng) {
-        message.error('You can only upload JPG/PNG file!');
-    }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-        message.error('Image must smaller than 2MB!');
-    }
-    return isJpgOrPng && isLt2M;
-}
 
 
 export default function AddCourse() {
 
     var myDate = new Date();
-    console.log(myDate.toLocaleString())
+    var datetime=myDate.toLocaleDateString() + " " + myDate.getHours() + ":" + myDate.getMinutes() + ":" + myDate.getSeconds();
+    console.log(datetime)
 
     const layout = {
         labelCol: { span: 8 },
@@ -39,31 +23,6 @@ export default function AddCourse() {
     const tailLayout = {
         wrapperCol: { offset: 8, span: 16 },
     };
-
-    const [loading, setloading] = useState(false)
-    const [imageUrl, setimageUrl] = useState()
-
-    function handleChange(info) {
-        if (info.file.status === 'uploading') {
-            setloading(true)
-            return;
-        }
-        if (info.file.status === 'done') {
-            // Get this url from response in real world.
-            getBase64(info.file.originFileObj, imageUrl =>
-                setloading(false),
-                setimageUrl(imageUrl)
-            );
-        }
-    };
-    const uploadButton = (
-        <div>
-            {loading ? <LoadingOutlined /> : <PlusOutlined />}
-            <div style={{ marginTop: 8 }}>Upload</div>
-        </div>
-    );
-
-
     const onFinish = (values) => {
         console.log('Success:', values);
     };
@@ -72,6 +31,47 @@ export default function AddCourse() {
         console.log('Failed:', errorInfo);
     };
 
+    //上传课程视频文件用到的
+    const { Dragger } = Upload;
+    let fileintro=[]
+    const props = {
+        name: 'file',
+        multiple: true,     //支持一次性上传多个文件
+        action: 'http://www.aifixerpic.icu/upload/upload_img',
+        onChange(info) {
+            const { status } = info.file;
+           // const {resp}=info.file.response
+            
+            if (status !== 'uploading') {
+                console.log("uploading:",info.file, info.fileList);
+            }
+            if (status === 'done') {
+                message.success("done:"+`${info.file.name} 文件上传成功...`);
+                console.log("返回结果："+info.file.response);
+                fileintro.push(info.file.response)
+                console.log(fileintro)
+            } else if (status === 'error') {
+                message.error("error"+`${info.file.name} file upload failed.`);
+            }
+        },
+    };
+    //*****/
+
+    //验证头像文件大小（<2MB）和格式(jpg,png)
+    function beforeUpload(file) {
+        const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+        if (!isJpgOrPng) {
+            message.error('You can only upload JPG/PNG file!');
+        }
+        const isLt2M = file.size / 1024 / 1024 < 2;
+        if (!isLt2M) {
+            message.error('Image must smaller than 2MB!');
+        }
+        if (isJpgOrPng && isLt2M) {
+            message.success("封面上传成功..")
+        }
+        return isJpgOrPng && isLt2M;
+    }
 
     return (
         <div>
@@ -92,7 +92,10 @@ export default function AddCourse() {
             <Form
                 {...layout}
                 name="basic"
-                initialValues={{ remember: true }}
+                initialValues={{"uploadtime":"time"},
+                               {"coursefile":fileintro},
+                               {"fengmian":fileintro}
+                                }
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
             >
@@ -115,9 +118,10 @@ export default function AddCourse() {
                 <Form.Item
                     label="发布时间"
                     name="uploadtime"
-                    rules={[{ required: true, message: '请使用默认时间' }]}
                 >
-                    <Input defaultValue={myDate.toLocaleDateString() + " " + myDate.getHours() + ":" + myDate.getMinutes() + ":" + myDate.getSeconds()} />
+                    <Input
+                        defaultValue={myDate.toLocaleDateString() + " " + myDate.getHours() + ":" + myDate.getMinutes() + ":" + myDate.getSeconds()}
+                    />
                 </Form.Item>
 
                 <Form.Item
@@ -127,23 +131,38 @@ export default function AddCourse() {
                 >
                     <Input />
                 </Form.Item>
+
+                {/* 上传课程封面 */}
                 <Form.Item
                     label="上传课程封面"
-
-                    rules={[{ required: false, message: '课程描述不能为空' }]}
+                    name="fengmian"
                 >
                     <Upload
-                        name="avatar"
-                        listType="picture-card"
-                        className="avatar-uploader"
-                        showUploadList={false}
-                        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                        action="http://www.aifixerpic.icu/upload/upload_img"
+                        name="file"
+                        listType="picture"
+                        maxCount={1}
                         beforeUpload={beforeUpload}
-                        onChange={handleChange}
+                        //onChange={uploadfengmian}
                     >
-                        {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+                        <Button icon={<UploadOutlined />}>上传 (最多1张)</Button>
                     </Upload>
+                </Form.Item>
 
+                {/* 上传课程视频文件 */}
+                <Form.Item
+                    label="上传课程资料"
+                    name="coursefile"
+                >
+                    <Dragger {...props}>
+                        <p className="ant-upload-drag-icon">
+                            <InboxOutlined />
+                        </p>
+                        <p className="ant-upload-text">点击或拖动文件到此区域上传文件</p>
+                        <p className="ant-upload-hint">
+                            支持单次或批量上传
+                        </p>
+                    </Dragger>
                 </Form.Item>
 
 
