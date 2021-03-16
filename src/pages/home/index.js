@@ -2,14 +2,16 @@ import React,{useState} from 'react';
 import { Layout, Menu} from 'antd';
 import InfCourse from "../component/infCourse";
 import AddCourse from "../component/addCourse";
-import Concertration from "../component/lineChart"
-import "./home.css"
+import Concertration from "../component/lineChart";
+import Video from "../component/video";
+import "./home.css";
 import {
   DesktopOutlined,
   PieChartOutlined,
   FileOutlined,
   TeamOutlined,
   UserOutlined,
+  VideoCameraOutlined,
 } from '@ant-design/icons';
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -39,6 +41,9 @@ function Home() {
             <Menu.Item key="2" icon={<DesktopOutlined />} onClick={()=>{setclicktype("concentration")}}>
               专注度检测
             </Menu.Item>
+            <Menu.Item key="5" icon={<VideoCameraOutlined />} onClick={()=>{setclicktype("video")}}>
+              摄像头视频
+            </Menu.Item>
             <SubMenu key="sub1" icon={<UserOutlined />} title="课程管理">
               <Menu.Item key="3" onClick={()=>{setclicktype("infCourse")}}>课程信息</Menu.Item>
               <Menu.Item key="4" onClick={()=>{setclicktype("addCourse")}}>添加课程</Menu.Item>
@@ -64,7 +69,7 @@ function Home() {
               <Breadcrumb.Item>User</Breadcrumb.Item>
               <Breadcrumb.Item>Bill</Breadcrumb.Item>
             </Breadcrumb> */}
-            <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
+            <div className="site-layout-background" style={{ padding: 24, minHeight: 360}}>
               {/* Bill is a cat. */}
             
             {(()=>{
@@ -76,6 +81,8 @@ function Home() {
                     return <AddCourse />;
                   case "concentration":  //专注度检测界面
                     return <Concertration />
+                  case "video":  //摄像头界面
+                    return <Video />
                   case "Device":      //设备界面                  
                     return (<div>设备界面</div>);
                   default:

@@ -122,7 +122,7 @@ function Linechart() {
                 </Breadcrumb.Item>
             </Breadcrumb>
 
-            {/* 主体信息 */}
+            {/* 专注度信息 */}
             <div id="main" style={{ height: "400px" }} />
             <Button type="primary" size="large" onClick={clickreset}>重置</Button>
             <Button type="primary" size="large" onClick={clickpause}>暂停</Button>

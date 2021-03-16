@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Breadcrumb, Form, Input, Button, Upload, message } from 'antd';
+import { Breadcrumb, Form, Input, Button, Upload, message,DatePicker } from 'antd';
 import {
     HighlightOutlined,
     InfoCircleOutlined,
@@ -25,15 +25,25 @@ export default function AddCourse() {
     };
     const onFinish = (values) => {
         console.log('Success:', values);
+        console.log(values["coursename"],values["coursefile"].file)
     };
 
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };
 
+    //选择上传视频时间
+    function onOk(value) {
+        console.log('onOk: ', value);
+      }
+    function onChange(value, dateString) {
+        console.log('Selected Time: ', value);
+    }
+    //***** */
+
     //上传课程视频文件用到的
     const { Dragger } = Upload;
-    let fileintro=[]
+    let coursefilelist=[]
     const props = {
         name: 'file',
         multiple: true,     //支持一次性上传多个文件
@@ -46,16 +56,50 @@ export default function AddCourse() {
                 console.log("uploading:",info.file, info.fileList);
             }
             if (status === 'done') {
-                message.success("done:"+`${info.file.name} 文件上传成功...`);
-                console.log("返回结果："+info.file.response);
-                fileintro.push(info.file.response)
-                console.log(fileintro)
+                message.success("done:"+`${info.file.name} 课程文件上传成功...`);
+                console.log("课程文件返回结果："+info.file.response);
+                coursefilelist.push(info.file.response)
+                console.log("courselist::",coursefilelist)
+                console.log(typeof(coursefilelist))
             } else if (status === 'error') {
                 message.error("error"+`${info.file.name} file upload failed.`);
             }
         },
     };
     //*****/
+
+    /**上传封面的props
+    const propsfengmian={
+        action:"http://www.aifixerpic.icu/upload/upload_img",
+        name:"file",
+        listType:"picture",
+        maxCount:1,
+        beforeUpload:{beforeUpload},
+        onChange(info){
+            const { status } = info.file;
+            if (status === 'done') {
+                message.success("done:"+`${info.file.name} 封面文件上传成功...`);
+                console.log("封面文件返回结果："+info.file.response);
+            } else if (status === 'error') {
+                message.error("error"+`${info.file.name} file upload failed.`);
+            }
+        },
+    }
+    */
+   //上传封面图片
+   let fengmianimg=[]
+   function uploadfengmian(info){
+        const { status } = info.file;
+        if (status === 'done') {
+            message.success("done:"+`${info.file.name} 封面文件上传成功...`);
+            console.log("封面文件返回结果："+info.file.response);
+            fengmianimg=[]
+            fengmianimg.push(info.file.response)
+            console.log("fengmianimg::",fengmianimg)
+        } else if (status === 'error') {
+            message.error("error"+`${info.file.name} file upload failed.`);
+        }
+   }
 
     //验证头像文件大小（<2MB）和格式(jpg,png)
     function beforeUpload(file) {
@@ -66,9 +110,6 @@ export default function AddCourse() {
         const isLt2M = file.size / 1024 / 1024 < 2;
         if (!isLt2M) {
             message.error('Image must smaller than 2MB!');
-        }
-        if (isJpgOrPng && isLt2M) {
-            message.success("封面上传成功..")
         }
         return isJpgOrPng && isLt2M;
     }
@@ -92,10 +133,11 @@ export default function AddCourse() {
             <Form
                 {...layout}
                 name="basic"
-                initialValues={{"uploadtime":"time"},
-                               {"coursefile":fileintro},
-                               {"fengmian":fileintro}
-                                }
+                // initialValues={
+                //                {"coursefile":{coursefilelist}},
+                //                {"fengmian":fengmianimg},
+                //                {"cpursename":"name"}
+                //                 }
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
             >
@@ -103,6 +145,7 @@ export default function AddCourse() {
                     label="课程名称"
                     name="coursename"
                     rules={[{ required: true, message: '课程名称为不能为空' }]}
+                    //initialValue="kechengming"
                 >
                     <Input />
                 </Form.Item>
@@ -118,10 +161,10 @@ export default function AddCourse() {
                 <Form.Item
                     label="发布时间"
                     name="uploadtime"
+                    initialValue={datetime}
                 >
-                    <Input
-                        defaultValue={myDate.toLocaleDateString() + " " + myDate.getHours() + ":" + myDate.getMinutes() + ":" + myDate.getSeconds()}
-                    />
+                   {/* <DatePicker showTime onChange={onChange} onOk={onOk} /> */}
+                   <Input />
                 </Form.Item>
 
                 <Form.Item
@@ -135,7 +178,8 @@ export default function AddCourse() {
                 {/* 上传课程封面 */}
                 <Form.Item
                     label="上传课程封面"
-                    name="fengmian"
+                    // name="fengmian"
+                    // initialValue={fengmianimg}
                 >
                     <Upload
                         action="http://www.aifixerpic.icu/upload/upload_img"
@@ -143,8 +187,11 @@ export default function AddCourse() {
                         listType="picture"
                         maxCount={1}
                         beforeUpload={beforeUpload}
-                        //onChange={uploadfengmian}
+                        onChange={uploadfengmian}
                     >
+                    {/* <Upload
+                        {...propsfengmian}
+                    > */}
                         <Button icon={<UploadOutlined />}>上传 (最多1张)</Button>
                     </Upload>
                 </Form.Item>
@@ -152,7 +199,6 @@ export default function AddCourse() {
                 {/* 上传课程视频文件 */}
                 <Form.Item
                     label="上传课程资料"
-                    name="coursefile"
                 >
                     <Dragger {...props}>
                         <p className="ant-upload-drag-icon">
@@ -165,13 +211,23 @@ export default function AddCourse() {
                     </Dragger>
                 </Form.Item>
 
-
-
                 <Form.Item {...tailLayout}>
                     <Button type="primary" htmlType="submit">
-                        Submit
+                        发布课程
                         </Button>
                 </Form.Item>
+
+
+                 {/* 上传课程封面和课程文件的value值，只能这样写了0.0 */}
+                <Form.Item  
+                    name="fengmian"
+                    initialValue={fengmianimg}
+                ></Form.Item>
+                <Form.Item
+                    name="coursefile"
+                    initialValue={coursefilelist}
+                ></Form.Item>
+                {/* ************************************ */}
             </Form>
 
 
