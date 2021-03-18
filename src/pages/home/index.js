@@ -1,5 +1,5 @@
-import React,{useState} from 'react';
-import { Layout, Menu} from 'antd';
+import React,{useEffect, useState} from 'react';
+import { Layout, Menu, message} from 'antd';
 import InfCourse from "../component/infCourse";
 import AddCourse from "../component/addCourse";
 import Concertration from "../component/lineChart";
@@ -8,11 +8,13 @@ import "./home.css";
 import {
   DesktopOutlined,
   PieChartOutlined,
-  FileOutlined,
+  LogoutOutlined,
   TeamOutlined,
   UserOutlined,
   VideoCameraOutlined,
 } from '@ant-design/icons';
+import { useHistory } from 'react-router-dom';  //控制路由跳转
+import cookie from 'react-cookies'              //查询界面的cookie信息
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -23,10 +25,26 @@ function Home() {
 
     //点击不同menu右侧展示不同内容,控制type类型
     const[clicktype,setclicktype]=useState("coursesss")
-
     const onCollapse = collapsed => {
       setCollapsed(collapsed)
     };
+    let history = useHistory();
+    
+    useEffect(()=>{
+      console.log("组件初始化...")
+      let user=cookie.load("user")
+      console.log("cookie信息：",user)
+      if(user===undefined){
+        console.log("cookie:",user)
+        message.info("您尚未登录，自动跳转至登录界面...")
+        history.push('/login');
+      }
+    })
+
+    function quit(){
+      cookie.remove('user');
+      history.push('/login');
+    }
   
     return (
       <Layout style={{ minHeight: '100vh' }}>
@@ -52,8 +70,8 @@ function Home() {
               <Menu.Item key="6" onClick={()=>{setclicktype("infDevice")}}>设备信息</Menu.Item>
               <Menu.Item key="8" onClick={()=>{setclicktype("addDevice")}}>添加设备</Menu.Item>
             </SubMenu>
-            <Menu.Item key="9" icon={<FileOutlined />}>
-              Files
+            <Menu.Item key="9" onClick={quit} icon={<LogoutOutlined />}>
+              退出
             </Menu.Item>
           </Menu>
         </Sider>

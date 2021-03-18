@@ -7,6 +7,7 @@ import {
     InboxOutlined,
 
 } from '@ant-design/icons';
+import "./addcourse.css"
 
 
 
@@ -212,7 +213,7 @@ export default function AddCourse() {
                 </Form.Item>
 
                 <Form.Item {...tailLayout}>
-                    <Button type="primary" htmlType="submit">
+                    <Button type="primary" htmlType="submit" style={{ disabled:"disabled"}}>
                         发布课程
                         </Button>
                 </Form.Item>
@@ -233,6 +234,5 @@ export default function AddCourse() {
 
         </div>
     )
-
 
 }
