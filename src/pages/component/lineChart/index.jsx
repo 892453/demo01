@@ -69,7 +69,7 @@ function Linechart() {
             }
             var int = setInterval(function () {
                 addnode()
-            }, 1000/5); //1000除的数字代表帧数，即每秒钟添加的点（更新的次数）
+            }, 1000/1); //1000除的数字代表帧数，即每秒钟添加的点（更新的次数）
         }
 
         //当有setstatus（）执行时，上一轮的useEfeect生命周期即将结束，执行return函数，clearInterval（int）清除设置的间隔执行
@@ -122,7 +122,7 @@ function Linechart() {
                 </Breadcrumb.Item>
             </Breadcrumb>
 
-            {/* 主体信息 */}
+            {/* 专注度信息 */}
             <div id="main" style={{ height: "400px" }} />
             <Button type="primary" size="large" onClick={clickreset}>重置</Button>
             <Button type="primary" size="large" onClick={clickpause}>暂停</Button>
