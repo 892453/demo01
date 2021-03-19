@@ -19,7 +19,7 @@ class App extends Component {
         </Switch>
       </Router>
     )
-  }
+  }//pc
 }
 
 export default App;
