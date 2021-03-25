@@ -8,6 +8,7 @@ import {
 } from '@ant-design/icons';
 import "./infCourse.css"
 import Axios from 'axios';
+import CourseDetail from　".././coursedetail"
 
 /*
 用于展示课程管理的【课程信息】界面
@@ -30,28 +31,15 @@ function Courseinf() {
     function clickimg() {
         console.log("查看课程详细信息")
         document.getElementById("courseinfodetail").style.display = 'block';
+        document.getElementsByClassName("courseinfo")[0].style.display="none";
+        
     }
     function closeinfodetail(){
         console.log("关闭查看课程详细信息")
         document.getElementById("courseinfodetail").style.display = 'none';
+        document.getElementsByClassName("courseinfo")[0].style.display="block";
     }
 
-    // const coursedata = [{
-    //     "courseid": 1,
-    //     "cousername": "实验实践达标能力测试",
-    //     "courseurl": "https://p.ananas.chaoxing.com/star3/origin/6ce77a10dd3268daa7ba6c93e5e76459.jpg",
-    //     "uploadtime": "2021.3.9",
-    //     "uploadname": "user1",
-    //     "describe": "这是一个描述11"
-    // },
-    // {
-    //     "courseid": 2,
-    //     "cousername": "网络安全实验",
-    //     "courseurl": "https://p.ananas.chaoxing.com/star3/origin/6ce77a10dd3268daa7ba6c93e5e76459.jpg",
-    //     "uploadtime": "2021.3.10",
-    //     "uploadname": "user2",
-    //     "describe": "这是一个描述222"
-    // }]
 
     return (
 
@@ -76,7 +64,7 @@ function Courseinf() {
                 <div style={{textAlign:"right"}} className="move">
                     <span onClick={closeinfodetail}>关闭</span>
                 </div>
-                课程详细信息
+              <CourseDetail />
             </div>
 
             {/* 课程主体信息 */}

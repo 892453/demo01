@@ -34,7 +34,7 @@ function Login() {
             message.warning('用户名或密码均不能为空！');
             return;
         }
-        console.log("账户："+userName+"   密码："+PassWord+"请求登录")
+        //console.log("账户："+userName+"   密码："+PassWord+"请求登录")
         axios({	
             method:'post',
             url:"http://www.aifixerpic.icu/upload/login",
@@ -45,7 +45,7 @@ function Login() {
         }).then(res => {
             console.log("res:",res.data)
             if(res.data==="success"){
-                console.log("cookie到期时间"+inFifteenMinutes)
+                //console.log("cookie到期时间"+inFifteenMinutes)
                 cookie.save('user',userName, { path: '/',expires:inFifteenMinutes})
                 //cookie.save('pass',PassWord, { path: '/' })
                 message.success('登录成功,跳转主页...',4);

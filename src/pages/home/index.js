@@ -31,11 +31,11 @@ function Home() {
     let history = useHistory();
     
     useEffect(()=>{
-      console.log("组件初始化...")
+      //console.log("组件初始化...")
       let user=cookie.load("user")
-      console.log("cookie信息：",user)
+      //console.log("cookie信息：",user)
       if(user===undefined){
-        console.log("cookie:",user)
+        //console.log("cookie:",user)
         message.info("您尚未登录，自动跳转至登录界面...")
         history.push('/login');
       }

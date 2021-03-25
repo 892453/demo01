@@ -5,104 +5,124 @@ import {
     InfoCircleOutlined
 
 } from '@ant-design/icons';
-
+import axios from "axios"
 import * as echarts from 'echarts';
+import "./linechart.css"
 
 function Linechart() {
     const [status, setstatus] = useState(1)
     let prestatus = useRef(status)
     console.log("init")
+    let buttonstatus=1
+    let tmp=1
+    var date=new Date();// 获取系统当前时间
+    var yyyy=date.getFullYear();
+    var mth=date.getMonth();
+    var dd=date.getDate();
+    var hh=date.getHours();
+    var mm=date.getMinutes();
+    var ss=date.getSeconds(); 
+    console.log(yyyy,mth,dd,hh,mm,ss)
 
-    useEffect(() => {
-        console.log("组件挂载更新")
+    var data=[];
 
+  
+
+    
+
+
+    function clickpause(){
+        console.log("click 暂停")
+        
+        
+      
+    }
+
+    function clickbegin() {
+        console.log("click 开始")
+        buttonstatus=1
         var chartDom = document.getElementById('main');
         var myChart = echarts.init(chartDom);
         var option;
-
-        // 初始化x轴，y轴坐标
-        var xAxisData = [];
-        var yAxisData = [];
-        for (var i = 60; i > 0; i--) {
-            xAxisData.push(i + "秒前");
-        }
-        for (i = 1; i < 61; i++) {
-            yAxisData.push(null);
-        }
-        console.log("x:", xAxisData)
-        console.log("y:", yAxisData)
-
-        //初始化线性图形态
+        
+        var base = +new Date(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate(),new Date().getHours(), new Date().getMinutes(), new Date().getSeconds());
+        var oneDay = 1 * 1000;
+        var date = [];
+        
+        var data = [0];
+        
+       
+        
         option = {
-            title: {
-                text: '专注度情况'
-            },
             tooltip: {
                 trigger: 'axis',
-                axisPointer: { type: 'cross' }
+                position: function (pt) {
+                    return [pt[0], '10%'];
+                }
+            },
+            title: {
+                left: 'center',
+                text: '专注度-时间曲线',
+            },
+            toolbox: {
+                feature: {
+                    dataZoom: {
+                        yAxisIndex: 'none'
+                    },
+                    restore: {},
+                    saveAsImage: {}
+                }
             },
             xAxis: {
                 type: 'category',
-                data: xAxisData
+                boundaryGap: false,
+                data: date
             },
             yAxis: {
-                type: 'value'
+                type: 'value',
+                boundaryGap: [0, '100%']
             },
-            series: [{
-                data: yAxisData,
-                type: 'line',
-                //smooth: true
-            }]
+            dataZoom: [{
+                type: 'inside',
+                start: 0,
+                end: 100
+            }, {
+                start: 0,
+                end: 10
+            }],
+            series: [
+                {
+                    name: '专注度评分',
+                    type: 'line',
+                    symbol: 'none',
+                    sampling: 'lttb',
+                    itemStyle: {
+                        color: 'rgb(255, 70, 131)'
+                    },
+                    areaStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            offset: 0,
+                            color: 'rgb(255, 158, 68)'
+                        }, {
+                            offset: 1,
+                            color: 'rgb(255, 70, 131)'
+                        }])
+                    },
+                    data: data
+                }
+            ]
         };
 
-        //判断当前按钮状态status，status==0时就暂停渲染，status==1时就一直更新渲染
-        console.log("当前status:", status)
-        console.log("当前prestatus:", prestatus)
-        if (status === 1) {
-            option && myChart.setOption(option);
-            function addnode() {
-                yAxisData.push(Math.round(Math.random() * 1000));
-                if (yAxisData.length > 60) {
-                    yAxisData.shift();
-                }
-                myChart.setOption(option);
-            }
-            var int = setInterval(function () {
-                addnode()
-            }, 1000/1); //1000除的数字代表帧数，即每秒钟添加的点（更新的次数）
-        }
-
-        //当有setstatus（）执行时，上一轮的useEfeect生命周期即将结束，执行return函数，clearInterval（int）清除设置的间隔执行
-        return () => {
-            console.log("组件即将卸载")
-            clearInterval(int);
-        }
-
-        /** 使用requestAnimationFrame函数绘制折线图
-         * 
-     *    function addnode() {
-            yAxisData.push(Math.round(Math.random() * 1000));
-            if (yAxisData.length > 60) {
-                yAxisData.shift();
-            }
+        setInterval(() => {
+            var now = new Date(base += oneDay);
+            date.push([now.getHours(), now.getMinutes(), now.getSeconds()].join(':'));
+            axios.get("http://www.aifixerpic.icu/upload/getpointy").then((res)=>{
+                data.push(res.data)
+            })
             myChart.setOption(option);
-            requestAnimationFrame(addnode);
-        }    
-            setInterval(() => {
-                requestAnimationFrame(addnode);
-            }, 1000 / 1)
-     */
-
-
-    })
-
-    function clickpause() {
-        console.log("click 暂停")
-        setstatus(0)
-    }
-    function clickreset() {
-        console.log("click 重置")
-        setstatus(1)
+        }, 1000);
+        
+       
     }
 
     return (
@@ -124,10 +144,11 @@ function Linechart() {
 
             {/* 专注度信息 */}
             <div id="main" style={{ height: "400px" }} />
-            <Button type="primary" size="large" onClick={clickreset}>重置</Button>
-            <Button type="primary" size="large" onClick={clickpause}>暂停</Button>
 
-        </div>
+                    <Button type="primary" size="large" style={{ padding: "1px 15px", margin: "10px"}} onClick={clickbegin}>开始</Button>
+                    <Button type="primary" size="large" style={{ padding: "1px 15px", margin: "10px"}} onClick={clickpause}>暂停</Button>
+
+            </div>
     )
 
 

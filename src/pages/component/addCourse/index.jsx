@@ -213,7 +213,7 @@ export default function AddCourse() {
                 </Form.Item>
 
                 <Form.Item {...tailLayout}>
-                    <Button type="primary" htmlType="submit" style={{ disabled:"disabled"}}>
+                    <Button type="primary" htmlType="submit">
                         发布课程
                         </Button>
                 </Form.Item>

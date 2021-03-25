@@ -2,6 +2,8 @@
 /* 父元素相对定位 */
 .allcourseinfo{
     position: relative;
+    width: 100%;
+    height: 700px;
 }
 
 li,dd,dl{
@@ -37,10 +39,10 @@ li,dd,dl{
 /* 子元素绝对定位 */
 #courseinfodetail{
     display: none;
-    background: aqua;
+    background:  #052c50;
     position: absolute;
-    top: 0%;
+    top: 8%;
     left: 0%;
     width: 100%;
-    height: 100%;
+    height: 600px;
 }
