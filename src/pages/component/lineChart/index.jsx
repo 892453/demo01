@@ -10,11 +10,11 @@ import * as echarts from 'echarts';
 import "./linechart.css"
 
 function Linechart() {
-    const [status, setstatus] = useState(1)
-    let prestatus = useRef(status)
+
     console.log("init")
-    let buttonstatus=1
-    let tmp=1
+    let buttonstatus=1      //按钮状态
+    var datay=[];
+
     var date=new Date();// 获取系统当前时间
     var yyyy=date.getFullYear();
     var mth=date.getMonth();
@@ -24,7 +24,8 @@ function Linechart() {
     var ss=date.getSeconds(); 
     console.log(yyyy,mth,dd,hh,mm,ss)
 
-    var data=[];
+    var inte;
+    var myChart;
 
   
 
@@ -33,8 +34,8 @@ function Linechart() {
 
     function clickpause(){
         console.log("click 暂停")
-        
-        
+        console.log("datay:",datay)
+        clearInterval(inte)
       
     }
 
@@ -42,14 +43,26 @@ function Linechart() {
         console.log("click 开始")
         buttonstatus=1
         var chartDom = document.getElementById('main');
-        var myChart = echarts.init(chartDom);
+        if(myChart!=undefined){
+            //myChart.clear()
+            var date = [];
+            data=datay
+        }else{
+            myChart = echarts.init(chartDom);
+            var date = [];
+            var data = [0];
+            console.log("init data:",data)
+        }
+        
+        
+        
+       
+        
         var option;
         
         var base = +new Date(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate(),new Date().getHours(), new Date().getMinutes(), new Date().getSeconds());
         var oneDay = 1 * 1000;
-        var date = [];
-        
-        var data = [0];
+       
         
        
         
@@ -72,6 +85,9 @@ function Linechart() {
                     restore: {},
                     saveAsImage: {}
                 }
+            },
+            grid:{
+                right: '20%'
             },
             xAxis: {
                 type: 'category',
@@ -112,13 +128,17 @@ function Linechart() {
                 }
             ]
         };
+            
+            option && myChart.setOption(option)
 
-        setInterval(() => {
+            inte = setInterval(() => {
             var now = new Date(base += oneDay);
             date.push([now.getHours(), now.getMinutes(), now.getSeconds()].join(':'));
             axios.get("http://www.aifixerpic.icu/upload/getpointy").then((res)=>{
                 data.push(res.data)
+                datay.push(res.data)
             })
+           // console.log("画图的data",data)
             myChart.setOption(option);
         }, 1000);
         

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { Breadcrumb, Popover ,Row,Col } from 'antd';
+import { Breadcrumb, Popover } from 'antd';
 import {
     HighlightOutlined,
     InfoCircleOutlined,
-    CloseSquareOutlined
+    CloseOutlined
 
 } from '@ant-design/icons';
 import "./infCourse.css"
 import Axios from 'axios';
-//import CourseDetail from　"../coursedetail"
+import CourseDetail from　".././coursedetail"
 
 /*
 用于展示课程管理的【课程信息】界面
@@ -61,34 +61,19 @@ function Courseinf() {
 
             {/* 课程详细信息 */}
             <div id="courseinfodetail">
-
-                {/* 关闭查看【课程详情】按钮 */}
-                <Row justify="end">
-                    <Col span={1}>
-                        <CloseSquareOutlined onClick={closeinfodetail} style={{fontSize:"30px"}} />
-                    </Col>
-                </Row>
-                
-                {/* 课程详情界面 */}
-                <Row>
-                    <Col md={24} lg={24} xl={18}>
-                        <video style={{width:"100%"}} src="http://www.aifixerpic.icu/music/download_mp3?filename=比赛回顾.mp4" controls></video>
-                    </Col>
-                </Row>
-                    
-               
-              
+                <div style={{textAlign:"right"}} className="move">
+                    <span onClick={closeinfodetail}>关闭</span>
+                </div>
+              <CourseDetail />
             </div>
 
             {/* 课程主体信息 */}
             <div className="courseinfo">
-                {/* 【水平间隔，垂直间隔】 */}
-                <Row  gutter={[48, 32]}>    
+                <ul>
                     {
                         coursedata.map((cour) => {
                             return (
-                                
-                                <Col md={12} lg={8} xl={6}  key={cour.courseid}>
+                                <li className="lili" key={cour.courseid}>
                                     <a className="aaa" onClick={clickimg}>
                                         <img
                                             className="imgstyle"
@@ -104,18 +89,13 @@ function Courseinf() {
                                         </Popover>
                                     </dl>
 
-                                </Col>
-                               
-
-                            
-
-                                
-                                
+                                </li>
                             )
 
                         })
                     }
-                </Row>
+
+                </ul>
             </div>
         </div>
     )

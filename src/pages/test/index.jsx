@@ -1,28 +1,28 @@
 import React, { useState } from 'react'
 import "./test.css"
-//import img2 from "./bg3.png"
-
-import { Card, Input, Button, Spin } from 'antd';
+import { Row, Col,Card, Input, Button } from 'antd';
 import { KeyOutlined, UserOutlined } from '@ant-design/icons';
+import Login from "./login"
 
 
 function Test() {
     const [userName, setUserName] = useState("")
     const [PassWord, setPassWord] = useState("")
 
-    const checkLogin = () => {
-       
-        console.log("账户：", userName)
-        console.log("密码：", PassWord)
-        setTimeout(() => {
-           
-        }, 1000)
-    }
 
     return (
-        <div>
-           test
-           
+        <div className="main1">
+            <Row style={{height:"100px"}}>
+
+            </Row>
+            <Row justify="center" className="row1">
+                <Col sm={24} md={10} lg={8} xl={5}  className="col1">
+                    <div className="login-box">
+                        <Login />
+                    </div>
+                    
+                </Col>
+            </Row>
         </div>
 
 
