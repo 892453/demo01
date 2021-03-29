@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { Breadcrumb, Button } from 'antd';
+import { Breadcrumb, Button, Row,Col} from 'antd';
 import {
     HighlightOutlined,
     InfoCircleOutlined
@@ -7,7 +7,9 @@ import {
 } from '@ant-design/icons';
 import axios from "axios"
 import * as echarts from 'echarts';
+import Draggable from 'react-draggable';
 import "./linechart.css"
+import Video from "../video"
 
 function Linechart() {
 
@@ -165,8 +167,24 @@ function Linechart() {
             {/* 专注度信息 */}
             <div id="main" style={{ height: "400px" }} />
 
-                    <Button type="primary" size="large" style={{ padding: "1px 15px", margin: "10px"}} onClick={clickbegin}>开始</Button>
-                    <Button type="primary" size="large" style={{ padding: "1px 15px", margin: "10px"}} onClick={clickpause}>暂停</Button>
+                
+                    <Row> 
+                        <Col span={3}>
+                            <Button type="primary" size="large" style={{ padding: "1px 15px", margin: "10px"}} onClick={clickbegin}>开始</Button>
+                        </Col>
+                        <Col span={3}>
+                            <Button type="primary" size="large" style={{ padding: "1px 15px", margin: "10px"}} onClick={clickpause}>暂停</Button>
+                        </Col>
+
+                        <Col span={8}> 
+                            <Draggable><Video /></Draggable>
+                        </Col>
+                       
+                    </Row>
+                
+
+                    
+                    
 
             </div>
     )

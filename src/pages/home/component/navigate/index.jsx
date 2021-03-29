@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { MailOutlined, AppstoreOutlined, SettingOutlined } from '@ant-design/icons';
+import { MailOutlined, VideoCameraOutlined, SettingOutlined } from '@ant-design/icons';
 import { Menu , message} from "antd"
 import "./navigate.css"
 import InfCourse from "../../../component/infCourse";
@@ -52,6 +52,10 @@ function Navi() {
                 <Menu.Item key="setting:2" onClick={()=>{setcurrent("addDevice")}}>添加设备</Menu.Item>
               </Menu.ItemGroup>
             </SubMenu>
+
+            <Menu.Item key="pai" onClick={()=>{setcurrent("video")}} icon={<VideoCameraOutlined />}>
+              拍照
+            </Menu.Item>
 
             <Menu.Item key="quit" onClick={quit}>
               退出

@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
+import Draggable from 'react-draggable';
 
 export default function Video() {
 
@@ -21,8 +22,8 @@ export default function Video() {
         }
 
         let video = document.getElementById('video');
-        let canvas = document.getElementById('canvas');
-        let context = canvas.getContext('2d');
+        // let canvas = document.getElementById('canvas');
+        // let context = canvas.getContext('2d');
 
         function success(stream) {
             //兼容webkit核心浏览器
@@ -46,20 +47,27 @@ export default function Video() {
             alert('不支持访问用户媒体');
         }
 
-        document.getElementById('capture').addEventListener('click', function () {
-            context.drawImage(video, 0, 0, 480, 320);
-        })
+        //拍照按钮部分
+        // document.getElementById('capture').addEventListener('click', function () {
+        //     context.drawImage(video, 0, 0, 480, 320);
+        // })
     })
 
     return (
         <div>
+        <Draggable> 
+        <div>
             {/* video标签里的【control参数】可以设置暂停按钮 <video id="video" width="480" height="320" controls>  */}
-            <video id="video" width="480" height="320" >  
+           
+            <video id="video" width="100%" height="150px" >  
             </video>
-            <div>
+            {/* <div>
                 <button id="capture">拍照</button>
-            </div>
-            <canvas id="canvas" width="480" height="320"></canvas>
+            </div>*/}
+        </div>
+
+        </Draggable>
+        {/* <canvas id="canvas" width="480" height="320" style={{background:"red"}}></canvas>  */}
         </div>
     )
 }

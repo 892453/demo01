@@ -1,29 +1,29 @@
 import React, { useState } from 'react'
-import "./test.css"
-import { Row, Col,Card, Input, Button } from 'antd';
-import { KeyOutlined, UserOutlined } from '@ant-design/icons';
-import Login from "./login"
+import Draggable from 'react-draggable';
 
 
 function Test() {
-    const [userName, setUserName] = useState("")
-    const [PassWord, setPassWord] = useState("")
+   
 
 
     return (
-        <div className="main1">
-            <Row style={{height:"100px"}}>
+        <Draggable>
+            {/* // axis="x"
+            // handle=".handle"
+            // defaultPosition={{x: 0, y: 0}}
+            // position={null}
+            // grid={[25, 25]}
+            // scale={1}
+            // onStart={this.handleStart}
+            // onDrag={this.handleDrag}
+            // onStop={this.handleStop}>
+            // <div>
+            //     <div className="handle">Drag from here</div>
+            //     <div>This readme is really dragging on...</div>
+            // </div> */}
+            <div>11111</div>
 
-            </Row>
-            <Row justify="center" className="row1">
-                <Col sm={24} md={10} lg={8} xl={5}  className="col1">
-                    <div className="login-box">
-                        <Login />
-                    </div>
-                    
-                </Col>
-            </Row>
-        </div>
+        </Draggable>
 
 
     )

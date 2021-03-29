@@ -8,7 +8,7 @@ import {
 } from '@ant-design/icons';
 import "./infCourse.css"
 import Axios from 'axios';
-//import CourseDetail from　"../coursedetail"
+//import CourseDetail from　"../coursedetail" 
 
 /*
 用于展示课程管理的【课程信息】界面
@@ -83,7 +83,7 @@ function Courseinf() {
             {/* 课程主体信息 */}
             <div className="courseinfo">
                 {/* 【水平间隔，垂直间隔】 */}
-                <Row  gutter={[48, 32]}>    
+                <Row  gutter={[24, 32]}>    
                     {
                         coursedata.map((cour) => {
                             return (
