@@ -1,4 +1,4 @@
-import React,{ useEffect, useState } from 'react'
+import React,{ useEffect } from 'react'
 import * as echarts from 'echarts';
 import axios from "axios"
 
@@ -15,14 +15,6 @@ function Device() {
         var chartDom = document.getElementById('mains');
         var myChart = echarts.init(chartDom);
         var option;
-
-        var tmp={
-            "手机":1,
-            "平板":2,
-            "头戴设备":3,
-            "眼镜设备":4
-        }
-        
         
         myChart.showLoading();
         axios.get('http://aifixerpic.icu/upload/getjson/').then(
