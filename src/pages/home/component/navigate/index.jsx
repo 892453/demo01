@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { MailOutlined, VideoCameraOutlined, SettingOutlined } from '@ant-design/icons';
+import { MailOutlined, VideoCameraOutlined, SettingOutlined ,LaptopOutlined } from '@ant-design/icons';
 import { Menu , message} from "antd"
 import "./navigate.css"
 import InfCourse from "../../../component/infCourse";
 import AddCourse from "../../../component/addCourse";
 import Concertration from "../../../component/lineChart";
 import Video from "../../../component/video";
+import Device from "../../../component/device"
 import { useHistory } from 'react-router-dom';  //控制路由跳转
 import cookie from 'react-cookies'              //查询界面的cookie信息
 
@@ -46,12 +47,9 @@ function Navi() {
                 <Menu.Item key="setting:2" onClick={()=>{setcurrent("addCourse")}} >添加课程</Menu.Item>
               </Menu.ItemGroup>
             </SubMenu>
-            <SubMenu key="device" icon={<SettingOutlined />} title="设备管理">
-              <Menu.ItemGroup >
-                <Menu.Item key="setting:1" onClick={()=>{setcurrent("infDevice")}}>设备信息</Menu.Item>
-                <Menu.Item key="setting:2" onClick={()=>{setcurrent("addDevice")}}>添加设备</Menu.Item>
-              </Menu.ItemGroup>
-            </SubMenu>
+            <Menu.Item key="device" icon={<LaptopOutlined /> } onClick={()=>{setcurrent("infDevice")}}>
+              设备管理
+            </Menu.Item>
 
             <Menu.Item key="pai" onClick={()=>{setcurrent("video")}} icon={<VideoCameraOutlined />}>
               拍照
@@ -73,10 +71,9 @@ function Navi() {
                     return <Concertration />
                   case "video":  //摄像头界面
                     return <Video />
-                  case "infDevice":      //设备界面                  
-                    return (<div>设备信息界面</div>);
-                  case "addDevice":      //设备界面                  
-                    return (<div>添加设备界面</div>);
+                  case "infDevice":      //设备信息界面                  
+                    return <Device />
+                
                   default:
                     return <div>null</div>;
 

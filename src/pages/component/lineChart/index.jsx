@@ -75,6 +75,15 @@ function Linechart() {
                     return [pt[0], '10%'];
                 }
             },
+
+            visualMap: [{
+                show: false,
+                type: 'continuous',
+                seriesIndex: 0,
+                min: -20,
+                max: 30
+            }],   //沿y轴的渐变
+
             title: {
                 left: 'center',
                 text: '专注度-时间曲线',
@@ -117,15 +126,16 @@ function Linechart() {
                     itemStyle: {
                         color: 'rgb(255, 70, 131)'
                     },
-                    areaStyle: {
-                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                            offset: 0,
-                            color: 'rgb(255, 158, 68)'
-                        }, {
-                            offset: 1,
-                            color: 'rgb(255, 70, 131)'
-                        }])
-                    },
+                    //此处为数据面积图的颜色配置
+                    // areaStyle: {
+                    //     color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                    //         offset: 0,
+                    //         color: 'rgb(255, 158, 68)'
+                    //     }, {
+                    //         offset: 1,
+                    //         color: 'rgb(255, 70, 131)'
+                    //     }])
+                    // },
                     data: data
                 }
             ]
