@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { MailOutlined, VideoCameraOutlined, SettingOutlined ,LaptopOutlined } from '@ant-design/icons';
+import { MailOutlined, VideoCameraOutlined, CalendarOutlined ,LaptopOutlined,ExportOutlined,DotChartOutlined } from '@ant-design/icons';
 import { Menu , message} from "antd"
 import "./navigate.css"
 import InfCourse from "../../../component/infCourse";
 import AddCourse from "../../../component/addCourse";
 import Concertration from "../../../component/lineChart";
 import Video from "../../../component/video";
-import Device from "../../../component/device"
+import Device from "../../../component/device";
+import Sta1 from "../../../component/statistics"
 import { useHistory } from 'react-router-dom';  //控制路由跳转
 import cookie from 'react-cookies'              //查询界面的cookie信息
 
@@ -41,7 +42,7 @@ function Navi() {
               专注度检测
             </Menu.Item>
             
-            <SubMenu key="course" icon={<SettingOutlined />} title="课程管理">
+            <SubMenu key="course" icon={<CalendarOutlined />} title="课程管理">
               <Menu.ItemGroup >
                 <Menu.Item key="setting:1"  onClick={()=>{setcurrent("infCourse")}} >课程信息</Menu.Item>
                 <Menu.Item key="setting:2" onClick={()=>{setcurrent("addCourse")}} >添加课程</Menu.Item>
@@ -50,12 +51,20 @@ function Navi() {
             <Menu.Item key="device" icon={<LaptopOutlined /> } onClick={()=>{setcurrent("infDevice")}}>
               设备管理
             </Menu.Item>
+            <SubMenu key="tongji" icon={<DotChartOutlined />} title="统计管理">
+              <Menu.ItemGroup >
+                <Menu.Item key="tongji:1"  onClick={()=>{setcurrent("sta1")}} >统计1</Menu.Item>
+                <Menu.Item key="tongji:2" onClick={()=>{setcurrent("sta2")}} >统计2</Menu.Item>
+              </Menu.ItemGroup>
+            </SubMenu>
+
+            
 
             <Menu.Item key="pai" onClick={()=>{setcurrent("video")}} icon={<VideoCameraOutlined />}>
               拍照
             </Menu.Item>
 
-            <Menu.Item key="quit" onClick={quit}>
+            <Menu.Item key="quit" icon={<ExportOutlined />} onClick={quit}>
               退出
             </Menu.Item>
           </Menu>
@@ -73,6 +82,8 @@ function Navi() {
                     return <Video />
                   case "infDevice":      //设备信息界面                  
                     return <Device />
+                  case "sta1":          //统计管理1界面
+                    return <Sta1 />
                 
                   default:
                     return <div>null</div>;
