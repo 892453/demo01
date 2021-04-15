@@ -7,7 +7,9 @@ import AddCourse from "../../../component/addCourse";
 import Concertration from "../../../component/lineChart";
 import Video from "../../../component/video";
 import Device from "../../../component/device";
-import Sta1 from "../../../component/statistics"
+import Sta1 from "../../../component/classroom3d";
+import Sta2 from "../../../component/concer3d";
+import Head from "../../../component/head";
 import { useHistory } from 'react-router-dom';  //控制路由跳转
 import cookie from 'react-cookies'              //查询界面的cookie信息
 
@@ -53,8 +55,9 @@ function Navi() {
             </Menu.Item>
             <SubMenu key="tongji" icon={<DotChartOutlined />} title="统计管理">
               <Menu.ItemGroup >
-                <Menu.Item key="tongji:1"  onClick={()=>{setcurrent("sta1")}} >统计1</Menu.Item>
-                <Menu.Item key="tongji:2" onClick={()=>{setcurrent("sta2")}} >统计2</Menu.Item>
+                <Menu.Item key="tongji:1"  onClick={()=>{setcurrent("sta1")}} >位次柱状打分图</Menu.Item>
+                <Menu.Item key="tongji:2" onClick={()=>{setcurrent("sta2")}} >散点时间专注度图</Menu.Item>
+                <Menu.Item key="tongji:3" onClick={()=>{setcurrent("head")}} >头部姿态识别图</Menu.Item>
               </Menu.ItemGroup>
             </SubMenu>
 
@@ -80,10 +83,14 @@ function Navi() {
                     return <Concertration />
                   case "video":  //摄像头界面
                     return <Video />
-                  case "infDevice":      //设备信息界面                  
+                  case "infDevice":       //设备信息界面                  
                     return <Device />
-                  case "sta1":          //统计管理1界面
+                  case "sta1":            //位次柱状打分图
                     return <Sta1 />
+                  case "sta2":            //散点时间专注度图
+                    return <Sta2 />
+                  case "head":            //头部姿态识别图
+                    return <Head />
                 
                   default:
                     return <div>null</div>;
