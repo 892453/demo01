@@ -58,6 +58,7 @@ function Navi() {
                 <Menu.Item key="tongji:1"  onClick={()=>{setcurrent("sta1")}} >位次柱状打分图</Menu.Item>
                 <Menu.Item key="tongji:2" onClick={()=>{setcurrent("sta2")}} >散点时间专注度图</Menu.Item>
                 <Menu.Item key="tongji:3" onClick={()=>{setcurrent("head")}} >头部姿态识别图</Menu.Item>
+                
               </Menu.ItemGroup>
             </SubMenu>
 

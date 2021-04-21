@@ -69,6 +69,7 @@ function Statistic(){
             series: [{
                 type: 'bar3D',
                 name:'详细信息',
+                barSize:7,
                 data: data.map(function (item) {
                     return {
                         value: [item[0], item[1], item[2]],

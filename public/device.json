@@ -1,0 +1,94 @@
+{
+       
+    "nodes": [
+      {
+        "id": "0",
+        "name": "我自己",
+        "symbolSize": 100,
+        "x": -320.2656,
+        "y": 340.2145,
+        "value": 100,
+        "category": 0
+      },
+      {
+        "id": "1",
+        "name": "手机",
+        "symbolSize": 50,
+        "x": -400.08344,
+        "y": 385.8853,
+        "value": 50,
+        "mac":100001,
+        "linktime":"13:44",
+        "category": 1
+      },
+      {
+        "id": "2",
+        "name": "平板",
+        "symbolSize": 50,
+        "x": -240.76357,
+        "y": 295.29176,
+        "value":50,
+        "mac":100002,
+        "linktime":"13:45",
+        "category": 2
+      },
+      {
+        "id": "3",
+        "name": "头戴设备",
+        "symbolSize": 50,
+        "x": -400.82404,
+        "y": 295.26283,
+        "value": "已连接",
+        "mac":100003,
+        "linktime":"13:46",
+        "category": 3
+      },
+      {
+        "id": "4",
+        "name": "眼镜设备",
+        "symbolSize": 50,
+        "x": -240.30386,
+        "y": 385.06424,
+        "mac":100004,
+        "value": 50,
+        "linktime":"13:47",
+        "category": 4
+      }
+    ],
+    "links": [
+      {
+        "source": "1",
+        "target": "0"
+      },
+      {
+        "source": "2",
+        "target": "0"
+      },
+      {
+        "source": "3",
+        "target": "0"
+      },
+      {
+        "source": "4",
+        "target": "0"
+      }
+    ],
+    "categories": [
+      {
+        "name": "你自己"
+      },
+      {
+        "name": "手机"
+      },
+      {
+        "name": "平板"
+      },
+      {
+        "name": "头戴"
+      },
+      {
+        "name": "眼镜"
+      }
+    ]
+    
+}

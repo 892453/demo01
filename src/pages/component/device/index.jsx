@@ -17,7 +17,7 @@ function Device() {
         var option;
         
         myChart.showLoading();
-        axios.get('http://aifixerpic.icu/upload/getjson/').then(
+        axios.get('/device.json').then(
             graph =>{
 
                 console.log(graph)

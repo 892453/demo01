@@ -28,8 +28,8 @@ function Courseinf() {
 
     }, []);   //第二参数[]内是要监听的参数，没有要监听的参数时，setcoursedata()函数执行时不会触发useEffect()函数
 
-    function clickimg() {
-        console.log("查看课程详细信息")
+    function clickimg(param) {
+        console.log("查看课程详细信息"+param)
         document.getElementById("courseinfodetail").style.display = 'block';
         document.getElementsByClassName("courseinfo")[0].style.display="none";
         
@@ -39,6 +39,7 @@ function Courseinf() {
         document.getElementById("courseinfodetail").style.display = 'none';
         document.getElementsByClassName("courseinfo")[0].style.display="block";
     }
+
 
 
     return (
@@ -89,7 +90,7 @@ function Courseinf() {
                             return (
                                 
                                 <Col md={12} lg={8} xl={6}  key={cour.courseid}>
-                                    <a className="aaa" onClick={clickimg}>
+                                    <a className="aaa" onClick={clickimg.bind(this,cour.courseid)}>
                                         <img
                                             className="imgstyle"
                                             src={cour.courseurl}

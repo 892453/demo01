@@ -21,14 +21,16 @@ export default function Head() {
    
 
     //加载模型
-    const loadermodel=useCallback(()=>{
+    const loadermodel=useCallback(()=>{  
         const loader=new FBXLoader()
         
         loader.setPath('/static/')
-        loader.load("Character_Head_Model.fbx",(obj)=>{
+        loader.load("HAIR.fbx",(obj)=>{
             //console.log(obj)
-            obj.position.set(1.56, -10,-5)
-            obj.scale.set(1,1,1)
+            obj.position.set(0, 0,0)
+            obj.scale.set(0.02,0.02,0.02)
+            
+            
             Meshs.push(obj)
             Scene.add(obj)
 
@@ -145,21 +147,23 @@ export default function Head() {
 
     const renderScene=useCallback((a,b,c)=>{
         Render.render(Scene,Camera)
-        // Meshs.forEach(item=>{
-            
-        //     item.rotation.x=a*1/180*Math.PI
-        //     item.rotation.y=b*1/180*Math.PI
-        //     item.rotation.z=c*1/180*Math.PI
-        //     console.log(item.rotation.x,item.rotation.y,item.rotation.z) 
-          
-        // })
         Meshs.forEach(item=>{
             
-            item.rotation.y+=1/180*Math.PI
-           
+            item.rotation.x=a*1/180*Math.PI
+            item.rotation.y=b*1/180*Math.PI
+            item.rotation.z=c*1/180*Math.PI
             console.log(item.rotation.x,item.rotation.y,item.rotation.z) 
           
         })
+
+        //场景中的物体旋转起来
+        // Meshs.forEach(item=>{
+            
+        //    item.rotation.y+=1/180*Math.PI
+           
+        //     console.log(item.rotation.x,item.rotation.y,item.rotation.z) 
+          
+        // })
        
         //id.current=window.requestAnimationFrame(()=>renderScene())       //帧循环函数
         //记录当前的循环速度
@@ -183,13 +187,27 @@ export default function Head() {
         loadermodel()       //加载模型
        
 
-        var int=setInterval(() => {
-            axios.get("http://www.aifixerpic.icu/upload/head/").then((res)=>{
-                //console.log(res)
-                renderScene(res.data[0],res.data[1],res.data[2])
-            })
-            
-        }, 1000/60);
+        //var int=setInterval(() => {
+            // axios.get("http://www.aifixerpic.icu/upload/head/").then((res)=>{
+            //     //console.log(res)
+            //      renderScene(res.data[0],res.data[1],res.data[2])
+                
+            // })
+       // }, 1000/1);
+        axios.get("/headrotate.json").then((res)=>{
+            var num=res.data.length
+            var i=0
+            var int=setInterval(() => {
+                renderScene(res.data[i][0],res.data[i][2],res.data[i][1]);
+                i++;
+                if(i===num){
+                    clearInterval(int)
+                }
+                
+            },1000/15)
+        
+        
+        })
 
         document.addEventListener('resize',setView)
         
@@ -207,7 +225,7 @@ export default function Head() {
             })
             Render.dispose()                    //销毁【渲染器】
             Scene.dispose()                     //销毁【场景】
-            clearInterval(int)
+            //clearInterval(int)
         }
     },[])
 
