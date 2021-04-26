@@ -1,5 +1,5 @@
-import React  from 'react'
-import { Breadcrumb, Form, Input, Button, Upload, message } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Breadcrumb, Form, Input, Button, Upload, message,Result} from 'antd';
 import {
     HighlightOutlined,
     InfoCircleOutlined,
@@ -8,10 +8,24 @@ import {
 
 } from '@ant-design/icons';
 import "./addcourse.css"
+import cookie from 'react-cookies'
+//import Forbid from "../../forbid"
 
 
 
 export default function AddCourse() {
+
+    useEffect(()=>{
+        let role=cookie.load("role")
+        //console.log("判断角色："+role)
+        if(role!=="true"){
+            document.getElementsByClassName("add")[0].style.display="none"
+            document.getElementsByClassName("noaccess")[0].style.display="display"
+        }else{
+            document.getElementsByClassName("add")[0].style.display="display"
+            document.getElementsByClassName("noaccess")[0].style.display="none"
+        }
+    })
 
     var myDate = new Date();
     var datetime = myDate.toLocaleDateString() + " " + myDate.getHours() + ":" + myDate.getMinutes() + ":" + myDate.getSeconds();
@@ -88,6 +102,11 @@ export default function AddCourse() {
         return isJpgOrPng && isLt2M;
     }
 
+    // function Backhome(){
+    //     let history = useHistory();
+    //     history.push('/');
+    // }
+
     return (
         <div>
             {/* 头部面包屑 */}
@@ -96,7 +115,7 @@ export default function AddCourse() {
                     <HighlightOutlined />
                     <span>
                         课程管理
-                            </span>
+                    </span>
                 </Breadcrumb.Item>
                 <Breadcrumb.Item>
                     <InfoCircleOutlined />
@@ -104,7 +123,17 @@ export default function AddCourse() {
                 </Breadcrumb.Item>
             </Breadcrumb>
 
-            
+        {/* 当进入角色为【学生】时classname===noaccess界面展示，添加课程classname===add界面隐藏；同理可得 */}
+        <div className="noaccess">
+            <Result
+                status="403"
+                title="403"
+                subTitle="抱歉，添加课程页面只允许老师访问哦！"
+                // extra={<Button type="primary" onClick={Backhome}>返回主页</Button>}
+            />    
+        </div>
+        
+        <div className="add">
                     <Form
                         {...layout}
                         name="basic"
@@ -208,6 +237,7 @@ export default function AddCourse() {
                
 
 
+        </div>
         </div>
     )
 

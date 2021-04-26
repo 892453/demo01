@@ -56,7 +56,7 @@ function Navi() {
             <SubMenu key="tongji" icon={<DotChartOutlined />} title="统计管理">
               <Menu.ItemGroup >
                 <Menu.Item key="tongji:1"  onClick={()=>{setcurrent("sta1")}} >位次柱状打分图</Menu.Item>
-                <Menu.Item key="tongji:2" onClick={()=>{setcurrent("sta2")}} >散点时间专注度图</Menu.Item>
+                <Menu.Item key="tongji:2" onClick={()=>{setcurrent("sta2")}} >专注时间序列图</Menu.Item>
                 <Menu.Item key="tongji:3" onClick={()=>{setcurrent("head")}} >头部姿态识别图</Menu.Item>
                 
               </Menu.ItemGroup>
