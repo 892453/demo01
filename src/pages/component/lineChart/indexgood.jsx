@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react'
-import { Breadcrumb, Row,Col} from 'antd';
+import React, { useEffect, useState, useRef } from 'react'
+import { Breadcrumb, Button, Row,Col} from 'antd';
 import {
     HighlightOutlined,
     InfoCircleOutlined
@@ -13,8 +13,9 @@ import Video from "../video"
 
 function Linechart() {
 
-
-  
+    console.log("init")
+    let buttonstatus=1      //按钮状态
+    var datay=[];
 
     var date=new Date();// 获取系统当前时间
     var yyyy=date.getFullYear();
@@ -25,22 +26,41 @@ function Linechart() {
     var ss=date.getSeconds(); 
     console.log(yyyy,mth,dd,hh,mm,ss)
 
+    var inte;
+    var myChart;
+
+  
+
     
 
-    useEffect(()=>{
 
-        var inte;
-        var myChart;
+    function clickpause(){
+        console.log("click 暂停")
+        console.log("datay:",datay)
+        clearInterval(inte)
+      
+    }
+
+    function clickbegin() {
+        console.log("click 开始")
+        buttonstatus=1
         var chartDom = document.getElementById('main');
-        myChart = echarts.init(chartDom);
-        var date = [];
-        var data = [0];
+        if(myChart!=undefined){
+            //myChart.clear()
+            var date = [];
+            data=datay
+        }else{
+            myChart = echarts.init(chartDom);
+            var date = [];
+            var data = [0];
+            console.log("init data:",data)
+        }
         
         
         
        
         
-        var option; 
+        var option;
         
         var base = +new Date(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate(),new Date().getHours(), new Date().getMinutes(), new Date().getSeconds());
         var oneDay = 3 * 1000;
@@ -60,7 +80,7 @@ function Linechart() {
                 show: false,
                 type: 'continuous',
                 seriesIndex: 0,
-                min: 1,
+                min: 0,
                 max: 30
             }],   //沿y轴的渐变
 
@@ -106,7 +126,16 @@ function Linechart() {
                     itemStyle: {
                         color: 'rgb(255, 70, 131)'
                     },
-                   
+                    //此处为数据面积图的颜色配置
+                    // areaStyle: {
+                    //     color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                    //         offset: 0,
+                    //         color: 'rgb(255, 158, 68)'
+                    //     }, {
+                    //         offset: 1,
+                    //         color: 'rgb(255, 70, 131)'
+                    //     }])
+                    // },
                     data: data
                 }
             ]
@@ -119,23 +148,14 @@ function Linechart() {
             date.push([now.getHours(), now.getMinutes(), now.getSeconds()].join(':'));
             axios.get("http://www.aifixerpic.icu/upload/getpointy").then((res)=>{
                 data.push(res.data)
-                
+                datay.push(res.data)
             })
+           // console.log("画图的data",data)
             myChart.setOption(option);
         }, 3000);
-        return()=>{ 
-            console.log("linechart 页面销毁")
-            clearInterval(inte)
-            myChart.dispose()
-        }
-           
-            
         
-    },[])
-
-    
-
-
+       
+    }
 
     return (
         <div>
@@ -159,12 +179,12 @@ function Linechart() {
 
                 
                     <Row> 
-                        {/* <Col span={3}>
+                        <Col span={3}>
                             <Button type="primary" size="large" style={{ padding: "1px 15px", margin: "10px"}} onClick={clickbegin}>开始</Button>
                         </Col>
                         <Col span={3}>
                             <Button type="primary" size="large" style={{ padding: "1px 15px", margin: "10px"}} onClick={clickpause}>暂停</Button>
-                        </Col> */}
+                        </Col>
 
                         <Col span={8}> 
                             <Draggable><Video /></Draggable>

@@ -30,24 +30,23 @@ function Courseinf() {
                 let course = res.data.data
                 console.log("返回的courese:", course)
                 setcoursedata(course)
-                console.log({ coursedata })
             })
     }, []);   //第二参数[]内是要监听的参数，没有要监听的参数时，setcoursedata()函数执行时不会触发useEffect()函数
     function test2() {
 
-        console.log({videoaddr})
+        //console.log({videoaddr})
     }
     function clickimg(id) {
-        console.log("查看课程id" + id)
+        //console.log("查看课程id" + id)
         //post请求【课程详细信息内容】
         Axios({	
             method:'post',
-            url:"http://www.aifixerpic.icu/upload/getcourinfobyid",
+            url:"http://www.aifixerpic.icu/upload/ids",
             data:Qs.stringify({
                 "id": id
             })
         }).then((res) => {
-            console.log("res::",res)
+                // console.log("res::",res)
                 let coursedetail = res.data
                 if(coursedetail.coursefile[0].slice(-3)==="mp4")
                 {
@@ -59,11 +58,11 @@ function Courseinf() {
                     setfileurl(coursedetail.coursefile)
                 }
                 coursedetail.courseid = id
-                console.log("返回的课程详情", coursedetail)
+                //console.log("返回的课程详情", coursedetail)
                 setcourseinform(coursedetail)
                 document.getElementById("courseinfodetail").style.display = 'block';
                 if(document.getElementById("courseinfodetail").style.display = 'block')
-                console.log("页面展示")
+                //console.log("页面展示")
                 document.getElementsByClassName("courseinfo")[0].style.display = "none";
             })
     }
@@ -99,7 +98,7 @@ function Courseinf() {
                     </Col>
                 </Row>
                 <Row>
-                    <Col md={24} lg={24} xl={16}>
+                    <Col md={13} lg={13} xl={13}>
                         {
                             (videoaddr.slice(-3)!=="mp4")?
                             <Image
@@ -111,7 +110,8 @@ function Courseinf() {
                             <video id="onlinevideo" onClick={test2} style={{ width: "100%" }} src={videoaddr} controls></video>
                         }
                     </Col>
-                    <Col md={24} lg={24} xl={8}>
+                    <Col md={3} lg={3} xl={3}></Col>
+                    <Col md={8} lg={8} xl={8}>
                         <div style={{ border: "1px solid black" }}>
                             <div style={{ padding: '10px', paddingLeft: '20px' }}>课程名称：{courseinform.coursename}</div>
 
@@ -142,12 +142,9 @@ function Courseinf() {
                     }
                 </Row>
 
-                {/* <Button type="primary" shape="round" icon={<DownloadOutlined />} size={'large'}> */}
-
-
-                {/* </Button> */}
-
             </div>
+
+
             {/* 课程主体信息 */}
             <div className="courseinfo">
                 {/* 【水平间隔，垂直间隔】 */}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Breadcrumb, Form, Input, Button, Upload, message,Result} from 'antd';
 import {
     HighlightOutlined,
@@ -62,7 +62,7 @@ export default function AddCourse() {
                 console.log("uploading:", info.file, info.fileList);
             }
             if (status === 'done') {
-                message.success("done:" + `${info.file.name} 课程文件上传成功...`);
+                message.success("done:" + '${info.file.name} 课程文件上传成功...');
                 console.log("课程文件返回结果：" + info.file.response);
                 coursefilelist.push(info.file.response)
                 console.log("courselist::", coursefilelist)
@@ -126,11 +126,9 @@ export default function AddCourse() {
         {/* 当进入角色为【学生】时classname===noaccess界面展示，添加课程classname===add界面隐藏；同理可得 */}
         <div className="noaccess">
             <Result
-                status="403"
-                title="403"
-                subTitle="抱歉，添加课程页面只允许老师访问哦！"
-                // extra={<Button type="primary" onClick={Backhome}>返回主页</Button>}
-            />    
+                status="warning"
+                title="抱歉，添加课程页面只允许老师访问哦"
+            />   
         </div>
         
         <div className="add">

@@ -1,0 +1,53 @@
+{
+ "name": "分组信息",
+ "children": [
+  {
+   "name": "小组1",
+   "children": [
+      {"name": "11", "value": 3938},
+      {"name": "12", "value": 3812},
+      {"name": "13", "value": 6714},
+      {"name": "14", "value": 743}
+     ]
+  },
+  {
+   "name": "小组2",
+   "children": [
+    {"name": "ISchedulable", "value": 1041},
+    {"name": "Parallel", "value": 5176},
+    {"name": "Pause", "value": 449},
+    {"name": "Scheduler", "value": 5593},
+    {"name": "Sequence", "value": 5534},
+    {"name": "Transition", "value": 9201}
+   ]
+  },
+  {
+   "name": "小组3",
+   "children": [
+      {"name": "Converters", "value": 721},
+      {"name": "DelimitedTextConverter", "value": 4294},
+      {"name": "GraphMLConverter", "value": 9800},
+      {"name": "IDataConverter", "value": 1314},
+      {"name": "JSONConverter", "value": 2220}
+     ]
+  }
+  ,
+  {
+   "name": "小组4",
+   "children": [
+    {"name": "DirtySprite", "value": 8833},
+    {"name": "LineSprite", "value": 1732},
+    {"name": "RectSprite", "value": 3623},
+    {"name": "TextSprite", "value": 10066}
+   ]
+  },
+  {
+   "name": "小组5",
+   "children": [
+    {"name": "FlareVis", "value": 4116},
+	{"name": "LineSprite", "value": 1732},
+    {"name": "RectSprite", "value": 3623}
+   ]
+  }
+  ]
+  }
