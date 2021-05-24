@@ -1,52 +1,50 @@
 {
- "name": "分组信息",
+ "name": "智慧教育课堂",
  "children": [
   {
    "name": "小组1",
    "children": [
-      {"name": "11", "value": 3938},
-      {"name": "12", "value": 3812},
-      {"name": "13", "value": 6714},
-      {"name": "14", "value": 743}
+      {"name": "刘小壮", "value": 302011},
+      {"name": "王靖丽", "value": 302013},
+      {"name": "丁智航", "value":302018},
+      {"name": "周建峰", "value": 302014}
      ]
   },
   {
    "name": "小组2",
    "children": [
-    {"name": "ISchedulable", "value": 1041},
-    {"name": "Parallel", "value": 5176},
-    {"name": "Pause", "value": 449},
-    {"name": "Scheduler", "value": 5593},
-    {"name": "Sequence", "value": 5534},
-    {"name": "Transition", "value": 9201}
+    {"name": "陈禾嘉", "value": 302002},
+    {"name": "Wang", "value": 302001},
+    {"name": "党俊俊", "value": 302012},
+    {"name": "刘宣宣", "value": 302012},
+    {"name": "苏柯嘉", "value": 302012}
    ]
   },
   {
    "name": "小组3",
    "children": [
-      {"name": "Converters", "value": 721},
-      {"name": "DelimitedTextConverter", "value": 4294},
-      {"name": "GraphMLConverter", "value": 9800},
-      {"name": "IDataConverter", "value": 1314},
-      {"name": "JSONConverter", "value": 2220}
+      {"name": "黄硕", "value": 302012},
+      {"name": "夏若恒", "value": 302012},
+      {"name": "张庆", "value": 302012},
+      {"name": "周乐章", "value": 302012}
      ]
   }
   ,
   {
    "name": "小组4",
    "children": [
-    {"name": "DirtySprite", "value": 8833},
-    {"name": "LineSprite", "value": 1732},
-    {"name": "RectSprite", "value": 3623},
-    {"name": "TextSprite", "value": 10066}
+    {"name": "Zhang", "value": 302012},
+    {"name": "逯克嘉", "value": 302012},
+    {"name": "Tong", "value": 302012},
+    {"name": "李悦辰", "value": 302012}
    ]
   },
   {
    "name": "小组5",
    "children": [
-    {"name": "FlareVis", "value": 4116},
-	{"name": "LineSprite", "value": 1732},
-    {"name": "RectSprite", "value": 3623}
+    {"name": "Wan", "value": 302012},
+	{"name": "龚志威", "value": 302012},
+    {"name": "张深翔", "value": 302012}
    ]
   }
   ]

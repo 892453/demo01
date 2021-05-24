@@ -42,8 +42,8 @@ function Classroom3d() {
         var myChart = echarts.init(chartDom);
         var option;
         var data = [[]]
-        var hours = ['第一列', '第二列', '第三列', '第四列', '第五列', '第六列', '第七列', '第八列'];
-        var days = ['第一排', '第二排', '第三排', '第四排', '第五排', '第六排'];
+        var hours = ['第一列', '第二列', '第三列', '第四列'];
+        var days = ['第一排', '第二排', '第三排', '第四排', '第五排'];
 
         axios.get('/classroom3d.json').then(res => {
             console.log(res);

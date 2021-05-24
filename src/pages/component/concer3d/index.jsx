@@ -28,12 +28,14 @@ function Statistic() {
         var chartDom = document.getElementById('mains');
         var myChart = echarts.init(chartDom);
         var option;
-        axios.get('/concern3d1.json').then(res => {
+        axios.get('/concern3d.json').then(res => {
             console.log(res);
             var data = [[]];
             var dataY = [];
-            data = res.data.goals;
-            dataY = res.data.name;
+            for(var i=0;i<res.data.data.length;i++){
+                data[i] = res.data.data[i].goals;
+                dataY[i] = res.data.data[i].name;
+            }
             var five = 0;
             var five1 = 0;
             var five2 = 0;

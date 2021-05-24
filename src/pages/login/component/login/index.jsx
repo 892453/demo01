@@ -46,8 +46,10 @@ function Loginn() {
         }else if(res.data==="fail"){
             message.error('登录失败，请检查用户名或密码',4);
         }
-        
     })
+      .catch(error => {
+        message.error('登陆失败 '+error,4);
+      })
     }
   
   return (

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import Draggable from 'react-draggable';
+//import Draggable from 'react-draggable';
 
 export default function Video() {
 
@@ -55,18 +55,18 @@ export default function Video() {
 
     return (
         <div>
-        <Draggable> 
+        {/* <Draggable>  */}
         <div>
             {/* video标签里的【control参数】可以设置暂停按钮 <video id="video" width="480" height="320" controls>  */}
            
-            <video id="video" width="100%" height="150px" >  
+            <video id="video" width="100%" height="300px" >  
             </video>
             {/* <div>
                 <button id="capture">拍照</button>
             </div>*/}
         </div>
 
-        </Draggable>
+        {/* </Draggable> */}
         {/* <canvas id="canvas" width="480" height="320" style={{background:"red"}}></canvas>  */}
         </div>
     )

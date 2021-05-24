@@ -1,30 +1,46 @@
-import React, { useState } from 'react'
+import axios from 'axios';
+import React,{useEffect} from 'react'
 import Draggable from 'react-draggable';
-
+import Websocket from 'react-websocket';
 
 function Test() {
-   
+
+    function onmessage(e){
+        console.log("服务端发来数据：",e.data);
+    }
+    function onopen(){
+        console.log('websocket 打开成功');    
+    }
+    function onclose(){
+        console.log("websocket 连接关闭");
+    }
+
+    useEffect(()=>{
+        axios.get("http://pv.sohu.com/cityjson?ie=utf-8").then(res=>{
+            console.log(res)
+        })
+    })
 
 
     return (
-        <Draggable>
-            {/* // axis="x"
-            // handle=".handle"
-            // defaultPosition={{x: 0, y: 0}}
-            // position={null}
-            // grid={[25, 25]}
-            // scale={1}
-            // onStart={this.handleStart}
-            // onDrag={this.handleDrag}
-            // onStop={this.handleStop}>
-            // <div>
-            //     <div className="handle">Drag from here</div>
-            //     <div>This readme is really dragging on...</div>
-            // </div> */}
-            <div>11111</div>
+        <div>
+            <Draggable>
 
-        </Draggable>
+                <div>哈哈哈哈哈哈哈哈哈</div>
+                
+            </Draggable>
 
+            <Websocket
+                url='ws://192.168.0.115:7001/hello'
+                onMessage={onmessage}
+                onOpen={onopen}
+                onClose={onclose}
+                reconnect={true}
+                debug={true}
+            >
+
+            </Websocket>
+       </div>
 
     )
 }

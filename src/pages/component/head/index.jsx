@@ -204,7 +204,7 @@ export default function Head() {
                     clearInterval(int)
                 }
                 
-            },1000/15)
+            },1000/10)
         
         
         })
@@ -230,7 +230,7 @@ export default function Head() {
     },[])
 
     return(
-        <div ref={Body} style={{width:"100%",height:"800px"}} onMouseDown={dowm} onMouseMove={move} onMouseUp={up}>
+        <div ref={Body} style={{width:"100%",height:"230px",paddingTop:"35px"}} onMouseDown={dowm} onMouseMove={move} onMouseUp={up}>
         </div>
     )
     

@@ -4,8 +4,8 @@ import { Menu , message} from "antd"
 import "./navigate.css"
 import InfCourse from "../../../component/infCourse";
 import AddCourse from "../../../component/addCourse";
-//import Concertration from "../../../component/lineChart";   //专注度折线图界面  预留
-import Video from "../../../component/video";
+import Personinfo from "../../../component/personinfo";   //专注度折线图界面  预留
+//import Video from "../../../component/video";
 import Device from "../../../component/device";
 import Sta1 from "../../../component/classroom3d";
 import Sta2 from "../../../component/concer3d";
@@ -24,6 +24,7 @@ import {
 function Navi() {
 
   const [current,setcurrent] = useState("")
+  const [role,setrole] = useState(cookie.load("role"))
   const { SubMenu } = Menu;
   let history = useHistory();
 
@@ -36,6 +37,7 @@ function Navi() {
   useEffect(()=>{
     //console.log("组件初始化...")
     let user=cookie.load("user")
+   
     //console.log("cookie信息：",user)
     if(user===undefined){
       //console.log("cookie:",user)
@@ -69,8 +71,21 @@ function Navi() {
     option = {
         tooltip: {
             trigger: 'axis',
-            position: function (pt) {
-                return [pt[0], '10%'];
+             formatter:function (pt) {
+           
+              if(pt[0].data==0){
+                return "离开座位";
+              }
+              if(pt[0].data==1){
+                return "低头"
+              }
+              if(pt[0].data==2){
+                return "摇头晃脑"
+              }
+              if(pt[0].data==3){
+                return "聚精会神"
+              }
+                
             }
         },
 
@@ -78,8 +93,11 @@ function Navi() {
             show: false,
             type: 'continuous',
             seriesIndex: 0,
-            min: 1,
-            max: 30
+            min: 0,
+            max: 3,
+            inRange: {
+              color: ['#c1232b', '#fcce10', '#0098d9', '#22c3aa']
+          }
         }],   //沿y轴的渐变
 
         title: {
@@ -156,30 +174,28 @@ function Navi() {
 
         <div>
         <Menu selectedKeys={[current]} mode="horizontal" style={{fontSize:"18px",lineHeight: "50px",color:"#fff",backgroundColor:"#222222"}}>
-            <Menu.Item key="zhuan" onClick={()=>{setcurrent("concentration")}} icon={<MailOutlined />}>
-              专注度检测
+            <Menu.Item key="zhuan" onClick={()=>{setcurrent("personinfo")}} icon={<MailOutlined />}>
+              个人状态信息
             </Menu.Item>
             
             <SubMenu key="course" icon={<CalendarOutlined />} title="课程管理">
               <Menu.ItemGroup >
                 <Menu.Item key="setting:1"  onClick={()=>{setcurrent("infCourse")}} >课程信息</Menu.Item>
-                <Menu.Item key="setting:2" onClick={()=>{setcurrent("addCourse")}} >添加课程</Menu.Item>
+                <Menu.Item key="setting:2" onClick={()=>{setcurrent("addCourse")}} disabled={role==="true"?false:true}>添加课程</Menu.Item>
               </Menu.ItemGroup>
             </SubMenu>
             <Menu.Item key="device" icon={<LaptopOutlined /> } onClick={()=>{setcurrent("infDevice")}}>
               设备管理
             </Menu.Item>
-            <SubMenu key="tongji" icon={<DotChartOutlined />} title="统计管理">
+            <SubMenu key="tongji" icon={<DotChartOutlined />} title="统计管理" disabled={role==="true"?false:true}>
               <Menu.ItemGroup >
                 <Menu.Item key="tongji:1"  onClick={()=>{setcurrent("sta1")}} >位次柱状打分图</Menu.Item>
                 <Menu.Item key="tongji:2" onClick={()=>{setcurrent("sta2")}} >专注时间序列图</Menu.Item>
-                <Menu.Item key="tongji:3" onClick={()=>{setcurrent("head")}} >头部姿态识别图</Menu.Item>
+                {/* <Menu.Item key="tongji:3" onClick={()=>{setcurrent("head")}} >头部姿态识别图</Menu.Item> */}
                 
               </Menu.ItemGroup>
             </SubMenu>
-            <Menu.Item key="pai" onClick={()=>{setcurrent("video")}} icon={<VideoCameraOutlined />}>
-              拍照
-            </Menu.Item>
+         
 
             <Menu.Item key="quit" icon={<ExportOutlined />} onClick={quit}>
               退出
@@ -215,12 +231,9 @@ function Navi() {
                   case "addCourse":   //添加课程界面
                     document.getElementById("notrash").style.display="none";
                     return <AddCourse />;
-                  case "concentration":  //专注度检测界面
+                  case "personinfo":  //专注度检测界面
                     document.getElementById("notrash").style.display="block";    //展示专注度页面时要使用block属性
-                    break;
-                  case "video":  //摄像头界面
-                    document.getElementById("notrash").style.display="none";
-                    return <Video />
+                    return <Personinfo />
                   case "infDevice":       //设备信息界面   
                     document.getElementById("notrash").style.display="none";               
                     return <Device />
@@ -235,7 +248,7 @@ function Navi() {
                     return <Head />
                 
                   default:
-                    return <div>???</div>;
+                    return <div>.</div>;
 
                 }
             })()}

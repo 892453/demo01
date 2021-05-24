@@ -31,7 +31,7 @@ function Rightdev() {
                             data: [res.data],
             
                             top: '1%',
-                            left: '25%',
+                            left: '32%',
                             bottom: '1%',
                             right: '23%',
             
