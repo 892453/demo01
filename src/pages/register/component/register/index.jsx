@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import 'antd/dist/antd.css';
-import { Card, Input,Upload, Button, message,Form,Select } from 'antd';
+import {  Input,Upload, Button, message,Form,Select } from 'antd';
+import axios from "axios"
+//import Qs from 'qs'
 
 import { PhoneOutlined, VerifiedOutlined, KeyOutlined, UploadOutlined ,CaretLeftFilled} from '@ant-design/icons';
 
@@ -16,10 +18,34 @@ function Register() {
 
     const checkRegister = () => {
 
-        console.log("手机号：", userPhone)
-        console.log("验证码：", VerCode)
-        console.log("密码：", PassWord)
+        console.log("手机号：", userPhone,typeof(userPhone))
+        console.log("验证码：", VerCode,typeof(VerCode))
+        console.log("密码：", PassWord,typeof(PassWord))
         console.log("确认密码：", ConfirmPass)
+        axios({	
+            method:'post',
+            url:"http://120.27.236.223:9000/login/register",
+            data:{
+                "phone":userPhone,
+                "code":VerCode,
+                "userName":"A"+userPhone,
+                "password":PassWord
+            },
+            header:{
+                'Content-Type':'application/json'  //如果写成contentType会报错
+            }
+            
+        }).then(res => {
+            console.log("res:",res.data)
+            if(res.data.success===true){
+               message.info("注册成功！",2)
+            }else if(res.data.success===false){
+                message.error('注册失败'+res.data,2);
+            }
+          })
+          .catch(error => {
+            message.error('未知错误 '+error,4);
+          })
 
     };
 
@@ -43,7 +69,24 @@ function Register() {
         </Form.Item>
       );
     const clickvercode=()=>{
-            console.log("获取验证码的手机号：",userPhone)
+        console.log("获取验证码的手机号：",userPhone,typeof(userPhone))
+            axios({	
+                method:'get',
+                url:"http://120.27.236.223:9000/sms/sendCode",
+                params:{
+                    "phone":userPhone,
+                }
+            }).then(res => {
+                console.log("res:",res.data)
+                if(res.data.success===true){
+                   message.info("验证码已经发送！",2)
+                }else if(res.data.success===false){
+                    message.error('获取失败',2);
+                }
+              })
+              .catch(error => {
+                message.error('未知错误 '+error,4);
+              })
     }
 
     return (

@@ -9,6 +9,7 @@ import {
 } from '@ant-design/icons';
 import "./addcourse.css"
 import cookie from 'react-cookies'
+import axios from 'axios';
 //import Forbid from "../../forbid"
 
 
@@ -39,8 +40,26 @@ export default function AddCourse() {
         wrapperCol: { offset: 10, span: 2 },    //按钮向右偏移的span，所占的span
     };
     const onFinish = (values) => {
-        console.log('Success:', values);
-        console.log(values["coursename"], values["coursefile"].file)
+        console.log('课程参数:', values);  
+        console.log(values.fengmian[0].toString())
+       axios({
+           method:"POST",
+           url:"http://120.27.236.223:9000/course/save",
+           data:{
+               //"courseId":"",
+               "courseName":values.coursename,
+               "courseType":1,
+               "courseTeacher":values.uploadname,
+               "courseIntroduction":values.describle,
+            //    "courseReleaseTime":values.uploadtime,
+               "courseAvatarId":values.fengmian[0],
+               "courseLikedTimes":0,
+               "courseFileId":values.coursefile
+           }
+       }).then(res=>{
+           console.log(res.data)
+       })
+       
     };
 
     const onFinishFailed = (errorInfo) => {
@@ -51,9 +70,9 @@ export default function AddCourse() {
     const { Dragger } = Upload;
     var coursefilelist = []
     const props = {
-        name: 'file',
+        name: 'files',
         multiple: true,     //支持一次性上传多个文件
-        action: 'http://www.aifixerpic.icu/upload/upload_img',
+        action: 'http://120.27.236.223:9000/course/uploadFile',
         onChange(info) {
             const { status } = info.file;
             // const {resp}=info.file.response
@@ -64,7 +83,7 @@ export default function AddCourse() {
             if (status === 'done') {
                 message.success("done:" + '${info.file.name} 课程文件上传成功...');
                 console.log("课程文件返回结果：" + info.file.response);
-                coursefilelist.push(info.file.response)
+                coursefilelist.push(info.file.response.result[0])
                 console.log("courselist::", coursefilelist)
                 console.log(typeof (coursefilelist))
             } else if (status === 'error') {
@@ -79,10 +98,10 @@ export default function AddCourse() {
         const { status } = info.file;
         fengmianimg.splice(0,fengmianimg.length)    //清空数组元素,使用 fengmianimg=[] 清空数组时不行
         if (status === 'done') {
-            message.success("done:" + `${info.file.name} 封面文件上传成功...`);
-            console.log("封面文件返回结果：" + info.file.response);
+            message.success("done: " + `${info.file.name} 封面文件上传成功...`);
+            console.log("封面文件返回结果：" + info.file.response.result);
             
-            fengmianimg.push(info.file.response)
+            fengmianimg.push(info.file.response.result[0])
             console.log("fengmianimg::", fengmianimg)
         } else if (status === 'error') {
             message.error("error" + `${info.file.name} file upload failed.`);
@@ -184,8 +203,9 @@ export default function AddCourse() {
                         // initialValue={fengmianimg}
                         >
                             <Upload
-                                action="http://www.aifixerpic.icu/upload/upload_img"
-                                name="file"
+                                //action="http://www.aifixerpic.icu/upload/upload_img"
+                                action="http://120.27.236.223:9000/course/uploadCoursePic"
+                                name="files"
                                 listType="picture"
                                 maxCount={1}
                                 beforeUpload={beforeUpload}
@@ -223,7 +243,7 @@ export default function AddCourse() {
                         {/* 上传课程封面和课程文件的value值，只能这样写了0.0 */}
                         <Form.Item
                             name="fengmian"
-                            initialValue={{fengmianimg}}
+                            initialValue={fengmianimg}
                         ></Form.Item>
                         <Form.Item
                             name="coursefile"

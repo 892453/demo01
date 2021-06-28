@@ -1,5 +1,6 @@
 {
     "recommendations": [
-        "slevesque.vscode-3dviewer"
+        "slevesque.vscode-3dviewer",
+        "breaking-point.vsc-postman"
     ]
 }

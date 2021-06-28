@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { MailOutlined, VideoCameraOutlined, CalendarOutlined ,LaptopOutlined,ExportOutlined,DotChartOutlined } from '@ant-design/icons';
+import { MailOutlined, DatabaseOutlined, CalendarOutlined ,LaptopOutlined,ExportOutlined,DotChartOutlined } from '@ant-design/icons';
 import { Menu , message} from "antd"
 import "./navigate.css"
 import InfCourse from "../../../component/infCourse";
@@ -9,7 +9,7 @@ import Personinfo from "../../../component/personinfo";   //专注度折线图�
 import Device from "../../../component/device";
 import Sta1 from "../../../component/classroom3d";
 import Sta2 from "../../../component/concer3d";
-import Head from "../../../component/head";
+import Datasta from "../../../component/datasta";
 import { useHistory } from 'react-router-dom';  //控制路由跳转
 import cookie from 'react-cookies'              //查询界面的cookie信息
 import axios from "axios"
@@ -191,11 +191,13 @@ function Navi() {
               <Menu.ItemGroup >
                 <Menu.Item key="tongji:1"  onClick={()=>{setcurrent("sta1")}} >位次柱状打分图</Menu.Item>
                 <Menu.Item key="tongji:2" onClick={()=>{setcurrent("sta2")}} >专注时间序列图</Menu.Item>
-                {/* <Menu.Item key="tongji:3" onClick={()=>{setcurrent("head")}} >头部姿态识别图</Menu.Item> */}
+                
                 
               </Menu.ItemGroup>
             </SubMenu>
-         
+            <Menu.Item key="datasta" icon={<DatabaseOutlined /> } onClick={()=>{setcurrent("dataSta")}}>
+              数据统计
+            </Menu.Item>
 
             <Menu.Item key="quit" icon={<ExportOutlined />} onClick={quit}>
               退出
@@ -243,9 +245,9 @@ function Navi() {
                   case "sta2":            //散点时间专注度图
                     document.getElementById("notrash").style.display="none";
                     return <Sta2 />
-                  case "head":            //头部姿态识别图
-                  document.getElementById("notrash").style.display="none";
-                    return <Head />
+                  case "dataSta":            //数据统计管理界面
+                    document.getElementById("notrash").style.display="none";
+                    return <Datasta />
                 
                   default:
                     return <div>.</div>;

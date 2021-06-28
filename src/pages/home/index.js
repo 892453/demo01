@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Row, Col,Menu } from "antd"
+import React from 'react';
+import { Row, Col } from "antd"
 import Navigate from "./component/navigate"
 function Home() {
 

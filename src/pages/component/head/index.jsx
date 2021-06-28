@@ -2,7 +2,7 @@ import axios from 'axios'
 import React,{useState,useEffect,useCallback,useRef} from 'react'
 import * as THREE from "three"
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader"
-
+import Websocket from 'react-websocket';
 
 
 export default function Head() {
@@ -187,14 +187,11 @@ export default function Head() {
         loadermodel()       //加载模型
        
 
-        //var int=setInterval(() => {
-            // axios.get("http://www.aifixerpic.icu/upload/head/").then((res)=>{
-            //     //console.log(res)
-            //      renderScene(res.data[0],res.data[1],res.data[2])
-                
-            // })
-       // }, 1000/1);
-        axios.get("/headrotate.json").then((res)=>{
+     
+
+       /** 发送axios请求获取头部姿态数据
+        *  现在修改为使用websocket的onmessage()函数来请求数据，然后用renderscene()函数修改头部姿态
+            axios.get("/headrotate.json").then((res)=>{
             var num=res.data.length
             var i=0
             var int=setInterval(() => {
@@ -207,7 +204,8 @@ export default function Head() {
             },1000/10)
         
         
-        })
+        }) */
+       
 
         document.addEventListener('resize',setView)
         
@@ -229,8 +227,34 @@ export default function Head() {
         }
     },[])
 
+    function onmessage(e){
+        //console.log(e)
+        const tmp=eval(e)
+        renderScene(tmp[0],tmp[2],tmp[1])
+    }
+    function onopen(){
+        console.log('websocket 连接成功');    
+    }
+    function onclose(){
+        console.log("websocket 连接关闭");
+    }
+    function onerror(e){
+        console.log("发生错误"+e)
+    }
+
     return(
         <div ref={Body} style={{width:"100%",height:"230px",paddingTop:"35px"}} onMouseDown={dowm} onMouseMove={move} onMouseUp={up}>
+
+            <Websocket
+                url='ws://127.0.0.1:5678'
+                onMessage={onmessage}
+                onOpen={onopen}
+                onClose={onclose}
+                onError={onerror}
+                reconnect={true}
+                debug={true}
+            >
+            </Websocket>
         </div>
     )
     

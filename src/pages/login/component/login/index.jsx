@@ -29,24 +29,28 @@ function Loginn() {
       console.log('登录信息：', values);
       axios({	
         method:'post',
-        url:"http://www.aifixerpic.icu/upload/login",
-        data:Qs.stringify({
-            "username": values.username,
+        //url:"http://www.aifixerpic.icu/upload/login",
+        url:"http://120.27.236.223:9000//login/login",
+        data:{
+            "loginAccount": values.username,
             "password":values.password,
-        })
+        },
+        header:{
+          'Content-Type':'application/json'  //如果写成contentType会报错
+        }
     }).then(res => {
         console.log("res:",res.data)
-        if(res.data==="success"){
+        if(res.data.success===true){
             //console.log("cookie到期时间"+inFifteenMinutes)
             cookie.save('user',values.username, { path: '/',expires:inFifteenMinutes})
             cookie.save('role',values.role, { path: '/',expires:inFifteenMinutes})
             //cookie.save('pass',PassWord, { path: '/' })
             message.success('登录成功,跳转主页...',4);
             history.push('/');
-        }else if(res.data==="fail"){
+        }else if(res.data.success===false){
             message.error('登录失败，请检查用户名或密码',4);
         }
-    })
+      })
       .catch(error => {
         message.error('登陆失败 '+error,4);
       })
