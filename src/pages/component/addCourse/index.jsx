@@ -29,7 +29,7 @@ export default function AddCourse() {
     })
 
     var myDate = new Date();
-    var datetime = myDate.toLocaleDateString() + " " + myDate.getHours() + ":" + myDate.getMinutes() + ":" + myDate.getSeconds();
+    var datetime = myDate.getFullYear()+"-"+myDate.getMonth()+"-"+myDate.getDay() + " " + myDate.getHours() + ":" + myDate.getMinutes() + ":" + myDate.getSeconds();
     console.log(datetime)
 
     const layout = {
@@ -51,13 +51,18 @@ export default function AddCourse() {
                "courseType":1,
                "courseTeacher":values.uploadname,
                "courseIntroduction":values.describle,
-            //    "courseReleaseTime":values.uploadtime,
+               "courseReleaseTime":values.uploadtime,
                "courseAvatarId":values.fengmian[0],
                "courseLikedTimes":0,
                "courseFileId":values.coursefile
            }
        }).then(res=>{
            console.log(res.data)
+           if(res.data.success===true){
+                message.success("课程上传成功啦！可以在课程列表里查看")
+           }else{
+                message.error("课程上传失败！")
+           }
        })
        
     };
@@ -99,7 +104,7 @@ export default function AddCourse() {
         fengmianimg.splice(0,fengmianimg.length)    //清空数组元素,使用 fengmianimg=[] 清空数组时不行
         if (status === 'done') {
             message.success("done: " + `${info.file.name} 封面文件上传成功...`);
-            console.log("封面文件返回结果：" + info.file.response.result);
+            //console.log("封面文件respone："+info.file.response.result[0]);
             
             fengmianimg.push(info.file.response.result[0])
             console.log("fengmianimg::", fengmianimg)

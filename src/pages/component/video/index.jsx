@@ -56,7 +56,7 @@ export default function Video() {
     return (
         <div>
         {/* <Draggable>  */}
-        <div>
+        <div style={{marginTop:"35px"}}>
             {/* video标签里的【control参数】可以设置暂停按钮 <video id="video" width="480" height="320" controls>  */}
            
             <video id="video" width="100%" height="300px" >  

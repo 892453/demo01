@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function muse(){
+export default function Muse(){
     return (
         <div>
             muse

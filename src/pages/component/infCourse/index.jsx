@@ -24,14 +24,15 @@ function Courseinf() {
     const [courseinform, setcourseinform] = useState({})
     const [videoaddr, setvideoaddr] = useState(""); //获取视频的地址
     const [fileurl, setfileurl] = useState([]);
+    const [avator,setavator] = useState("");
     const [visible, setvisible] = useState(false)
 
     useEffect(() => {
         //get请求【课程信息内容】
-        Axios.get("http://www.aifixerpic.icu/upload/name")
+        Axios.get("http://120.27.236.223:9000/course/list")
             .then((res) => {
-                let course = res.data.data
-                console.log("返回的courese:", course)
+                let course = res.data.result
+                console.log("返回的courese:",res.data.result)
                 setcoursedata(course)
             })
     }, []);   //第二参数[]内是要监听的参数，没有要监听的参数时，setcoursedata()函数执行时不会触发useEffect()函数
@@ -49,23 +50,37 @@ function Courseinf() {
         //console.log("查看课程id" + id)
         //post请求【课程详细信息内容】
         Axios({
-            method: 'post',
-            url: "http://www.aifixerpic.icu/upload/ids",
-            data: Qs.stringify({
-                "id": id
-            })
+            method: 'get',
+            url: "http://120.27.236.223:9000/course/info/"+id,
+            
         }).then((res) => {
-             console.log("res::",res)
-            let coursedetail = res.data
-            if (coursedetail.coursefile[0].slice(-3) === "mp4") {
-                setvideoaddr(coursedetail.coursefile[0])
-                setfileurl(coursedetail.coursefile.slice(1))
+             console.log(id+"课程信息：",res.data.result)
+            let coursedetail = res.data.result
+            if(coursedetail.courseAvatarPath==null){
+                setavator("https://p.ananas.chaoxing.com/star3/origin/6ce77a10dd3268daa7ba6c93e5e76459.jpg")
             }
-            else {
+            else{
+                setavator(coursedetail.courseAvatarPath)
+            }
+            if(coursedetail.courseFilePath==null){
                 setvideoaddr("")
-                setfileurl(coursedetail.coursefile)
+                console.log("1:"+coursedetail)
+                setfileurl([])
+                console.log(fileurl)
             }
-            coursedetail.courseid = id
+            else{
+                if (coursedetail.courseFilePath[0].slice(-3) === "mp4") {
+                    setvideoaddr(coursedetail.courseFilePath[0])
+                    setfileurl(coursedetail.courseFilePath.slice(1))
+                }
+                else {
+                    setvideoaddr("")
+                    setfileurl(coursedetail.courseFilePath)
+                }
+
+            }
+            
+            coursedetail.courseId = id
             //console.log("返回的课程详情", coursedetail)
             setcourseinform(coursedetail)
             document.getElementById("courseinfodetail").style.display = 'block';
@@ -112,7 +127,7 @@ function Courseinf() {
                                 <Image
                                     style={{}}
                                     width={400}
-                                    src={courseinform.fengmian}
+                                    src={avator}
                                 />
                                 :
                                 <video id="onlinevideo" style={{ width: "100%" }} src={videoaddr} controls></video>
@@ -121,18 +136,18 @@ function Courseinf() {
                     <Col md={3} lg={3} xl={3}></Col>
                     <Col md={8} lg={8} xl={8}>
                         <div style={{ border: "1px solid black" }}>
-                            <div style={{ padding: '10px', paddingLeft: '20px' }}>课程名称：{courseinform.coursename}</div>
+                            <div style={{ padding: '10px', paddingLeft: '20px' }}>课程名称：{courseinform.courseName}</div>
 
-                            <div style={{ padding: '10px', paddingLeft: '20px' }}>课程编号：{courseinform.courseid}</div>
+                            <div style={{ padding: '10px', paddingLeft: '20px' }}>课程编号：{courseinform.courseId}</div>
 
-                            <div style={{ padding: '10px', paddingLeft: '20px' }}>发布时间：{courseinform.uploadtime}</div>
+                            <div style={{ padding: '10px', paddingLeft: '20px' }}>发布时间：{courseinform.courseReleaseTime}</div>
 
-                            <div style={{ padding: '10px', paddingLeft: '20px' }}>主讲人：{courseinform.uploadname}</div>
+                            <div style={{ padding: '10px', paddingLeft: '20px' }}>主讲人：{courseinform.courseTeacher}</div>
 
                             <div style={{ padding: '10px', paddingLeft: '20px' }}>
                                 课程描述：
                                     <Card bordered={false}>
-                                    <p>{courseinform.describe}</p>
+                                    <p>{courseinform.courseIntroduction}</p>
                                 </Card>
                             </div>
                         </div>
@@ -166,19 +181,19 @@ function Courseinf() {
                         coursedata.map((cour, index) => {
                             return (
 
-                                <Col md={12} lg={8} xl={6} key={cour.courseid} >
-                                    <a className="aaa" onClick={clickimg.bind(this, cour.courseid)} id={cour.courseid}>
+                                <Col md={12} lg={8} xl={6} key={cour.courseId} >
+                                    <a className="aaa" onClick={clickimg.bind(this, cour.courseId)} id={cour.courseId}>
                                         <img
                                             className="imgstyle"
-                                            src={cour.courseurl}
+                                            src={cour.courseAvatarPath}
                                             alt="Tup2"
                                         />
                                     </a>
                                     <dl className="dlstyle">
-                                        <Popover content={cour.describle} title="【课程简介】" trigger="hover">
-                                            <dt>{cour.coursename}</dt>
-                                            <dt>发布人：{cour.uploadname}</dt>
-                                            <dt>发布时间：{cour.uploadtime}</dt>
+                                        <Popover content={cour.courseIntroduction} title="【课程简介】" trigger="hover">
+                                            <dt>{cour.courseName}</dt>
+                                            <dt>发布人：{cour.courseTeacher}</dt>
+                                            <dt>发布时间：{cour.courseReleaseTime}</dt>
                                         </Popover>
                                     </dl>
 

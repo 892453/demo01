@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useRef } from 'react';
 import { MailOutlined, DatabaseOutlined, CalendarOutlined ,LaptopOutlined,ExportOutlined,DotChartOutlined } from '@ant-design/icons';
 import { Menu , message} from "antd"
 import "./navigate.css"
@@ -14,7 +14,7 @@ import { useHistory } from 'react-router-dom';  //控制路由跳转
 import cookie from 'react-cookies'              //查询界面的cookie信息
 import axios from "axios"
 import * as echarts from 'echarts';
-import { Breadcrumb} from 'antd';
+import { Breadcrumb,Row,Col,Card } from 'antd';
 import {
     HighlightOutlined,
     InfoCircleOutlined
@@ -27,12 +27,37 @@ function Navi() {
   const [role,setrole] = useState(cookie.load("role"))
   const { SubMenu } = Menu;
   let history = useHistory();
+  const mes=useRef(null)
 
   //点击退出->清理cookie->跳转至login界面
   function quit(){
     cookie.remove('user');
     history.push('/login');
   }
+  //获取键盘按键信息
+  useEffect(()=>{
+        
+    document.onkeydown=function(event){
+        //console.log(event.key,"被按下")
+        mes.current.value=event.key+"被按下"
+        //console.log(mes)
+        if (event.altKey) {
+            mes.current.value='alt is active'
+            //console.log('alt is active');
+
+        }
+        if (event.shiftKey) {
+            mes.current.value='shift is active'
+            //console.log('shift is active');
+        }
+    }
+    document.onclick=function(event){
+        mes.current.value="鼠标点击坐标：" + "("+event.clientX+","+event.clientY+")"
+        //console.log("鼠标点击坐标：",event.clientX,event.clientY)
+    }
+    
+})
+
 
   useEffect(()=>{
     //console.log("组件初始化...")
@@ -54,7 +79,7 @@ function Navi() {
     var chartDom = document.getElementById('main');
     myChart = echarts.init(chartDom);
     var date = [];
-    var data = [0];
+    var data = [0,0,0];
     
     
     
@@ -74,16 +99,16 @@ function Navi() {
              formatter:function (pt) {
            
               if(pt[0].data==0){
-                return "离开座位";
+                return "unconcentrated";
               }
               if(pt[0].data==1){
-                return "低头"
+                return "barely concentrated"
               }
               if(pt[0].data==2){
-                return "摇头晃脑"
+                return "neutraul"
               }
               if(pt[0].data==3){
-                return "聚精会神"
+                return "concentrated"
               }
                 
             }
@@ -104,17 +129,8 @@ function Navi() {
             left: 'center',
             text: '专注度-时间曲线',
         },
-        toolbox: {
-            feature: {
-                dataZoom: {
-                    yAxisIndex: 'none'
-                },
-                restore: {},
-                saveAsImage: {}
-            }
-        },
         grid:{
-            right: '20%'
+            right: '5%'
         },
         xAxis: {
             type: 'category',
@@ -125,6 +141,7 @@ function Navi() {
             type: 'value',
             boundaryGap: [0, '100%']
         },
+        //内部的填充数据
         dataZoom: [{
             type: 'inside',
             start: 0,
@@ -138,7 +155,7 @@ function Navi() {
                 name: '专注度评分',
                 type: 'line',
                 symbol: 'none',
-                sampling: 'lttb',
+                hoverAnimation: false,
                 itemStyle: {
                     color: 'rgb(255, 70, 131)'
                 },
@@ -155,9 +172,12 @@ function Navi() {
         date.push([now.getHours(), now.getMinutes(), now.getSeconds()].join(':'));
         axios.get("http://www.aifixerpic.icu/upload/getpointy").then((res)=>{
             data.push(res.data)
-            console.log(res.data)
+            //console.log(res.data)
         })
-        
+        //如果连续三个值为0，给予学生警示
+        if(data.length>=3 && data.slice(-3)[0]===0 &&  data.slice(-3)[1]===0 && data.slice(-3)[2]===0){
+          message.warning("注意力不集中，请认真听讲", [5])
+        }
         myChart.setOption(option);
     }, 3000);
     return()=>{ 
@@ -212,7 +232,7 @@ function Navi() {
                     <HighlightOutlined />
                     <span>
                         数据分析
-                            </span>
+                    </span>
                 </Breadcrumb.Item>
 
                 <Breadcrumb.Item>
@@ -220,7 +240,21 @@ function Navi() {
                     <span>专注度检测</span>
                 </Breadcrumb.Item>
             </Breadcrumb>
-            <div id="main" style={{ height: "400px",background:"#DCF5FF",borderRadius:"20px"}} ></div>
+          <Row>
+            <Col span={17}>
+              <div id="main" style={{ height: "400px", background: "#DCF5FF", borderRadius: "20px" }} ></div>
+            </Col>
+            <Col span={1}>
+            </Col>
+          <Col span={6} style={{ background: "#DCF5FF", borderRadius: "20px" }}>
+            <Card title="举手状态" bordered={true} style={{margin:'40px 20px 20px 20px'}}>
+              Card content
+            </Card>
+            <Card title="键鼠信息" bordered={true} style={{margin:'40px 20px 20px 20px'}}>
+              <input ref={mes} style={{width:"100%",border:"none",color:"#e95992"}}  type="text"  />
+            </Card>
+          </Col>
+          </Row>
           </div>
 
           {(()=>{

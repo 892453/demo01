@@ -243,7 +243,7 @@ export default function Head() {
     }
 
     return(
-        <div ref={Body} style={{width:"100%",height:"230px",paddingTop:"35px"}} onMouseDown={dowm} onMouseMove={move} onMouseUp={up}>
+        <div ref={Body} style={{width:"100%",height:"292px",paddingTop:"38px"}} onMouseDown={dowm} onMouseMove={move} onMouseUp={up}>
 
             <Websocket
                 url='ws://127.0.0.1:5678'

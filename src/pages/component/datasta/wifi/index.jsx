@@ -1,9 +1,9 @@
 import React from 'react';
 
-export default function head(){
-    return (
+export default function Wifi(){
+    return(
         <div>
-            head
+            Wifi
         </div>
     )
 }

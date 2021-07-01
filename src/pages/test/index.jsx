@@ -1,8 +1,8 @@
-//import axios from 'axios';
+import axios from 'axios';
 import React,{useEffect,useRef} from 'react'
 import Draggable from 'react-draggable';
 import Websocket from 'react-websocket';
-import {Row,Col,Alert} from "antd"
+import {Row,Col,Alert,Button} from "antd"
 
 function Test() {
 
@@ -24,11 +24,16 @@ function Test() {
     function onerror(e){
         console.log("发生错误"+e)
     }
+    function dian(){
+        console.log("点击了click")
+        
+    }
 
     useEffect(()=>{
-        // axios.get("http://pv.sohu.com/cityjson?ie=utf-8").then(res=>{
+        // axios.get("http://pv.sohu.com/cityjson").then(res=>{
         //     console.log(res)
         // })
+        
         console.log(videoRef.current)
 
         videoRef.current.addEventListener('pause',()=>{
@@ -81,7 +86,7 @@ function Test() {
         
     })
 
-
+  
 
     return (
         <div>
@@ -121,6 +126,7 @@ function Test() {
               </Col>
             </Row>
 
+        <Button onClick={dian}>click</Button>
             
 
             
