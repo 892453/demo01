@@ -1,7 +1,8 @@
 import React from 'react';
 import { useEffect } from 'react';
 import * as echarts from 'echarts';
-import axios from "axios"
+import Axios from "axios"
+import { IPORT } from "../../../static/ipconfig"
 
 function Concern() {
 
@@ -16,15 +17,10 @@ function Concern() {
         var data = [0];
 
 
-
-
-
         var option;
 
         var base = +new Date(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate(), new Date().getHours(), new Date().getMinutes(), new Date().getSeconds());
         var oneDay = 3 * 1000;
-
-
 
 
         option = {
@@ -43,6 +39,9 @@ function Concern() {
                     }
                     if (pt[0].data == 3) {
                         return "concentrated"
+                    }
+                    if (pt[0].data == 4) {
+                        return "abnormal"
                     }
 
                 }
@@ -95,7 +94,6 @@ function Concern() {
                     itemStyle: {
                         color: 'rgb(255, 70, 131)'
                     },
-
                     data: data
                 }
             ]
@@ -105,17 +103,33 @@ function Concern() {
 
         inte = setInterval(() => {
             var now = new Date(base += oneDay);
-            if(date.length>=20){
+            if (date.length >= 20) {
                 date.shift()
             }
             date.push([now.getHours(), now.getMinutes(), now.getSeconds()].join(':'));
-            axios.get("http://www.aifixerpic.icu/upload/getpointy").then((res) => {
-                if(data.length>=20){
-                    data.shift()
-                }
-                data.push(res.data)
-                //console.log(res.data)
-            })
+            Axios.defaults.withCredentials = true; //配置为true
+            Axios.get(IPORT+"/attentionresult/getAttentionResultByUserID").then((res) => {
+                                console.log(res.data.result)
+                                let result = res.data.result
+                                if(data.length>=20){
+                                    data.shift()
+                                }
+                                if(result!=undefined){
+                                    console.log("rgb-专注度:"+result.algorithmDataDto.rgb_head_engagement)
+                                    data.push(result.algorithmDataDto.rgb_head_engagement)
+                                }
+                                else    data.push(4)
+                                //console.log(res.data)
+                            }).catch(() => {
+                                data.push(4)
+                            })
+            // Axios.get("http://www.aifixerpic.icu/upload/getpointy").then((res) => {
+            //     if (data.length >= 20) {
+            //         data.shift()
+            //     }
+            //     data.push(res.data)
+            //     //console.log(res.data)
+            // })
 
             myChart.setOption(option);
         }, 3000);

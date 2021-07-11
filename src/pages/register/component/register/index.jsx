@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import 'antd/dist/antd.css';
 import {  Input,Upload, Button, message,Form,Select } from 'antd';
 import axios from "axios"
+import {IPORT} from "../../../static/ipconfig"
+
 //import Qs from 'qs'
 
 import { PhoneOutlined, VerifiedOutlined, KeyOutlined, UploadOutlined ,CaretLeftFilled} from '@ant-design/icons';
@@ -24,7 +26,7 @@ function Register() {
         console.log("确认密码：", ConfirmPass)
         axios({	
             method:'post',
-            url:"http://120.27.236.223:9000/login/register",
+            url:IPORT+"/login/register",
             data:{
                 "phone":userPhone,
                 "code":VerCode,
@@ -72,7 +74,7 @@ function Register() {
         console.log("获取验证码的手机号：",userPhone,typeof(userPhone))
             axios({	
                 method:'get',
-                url:"http://120.27.236.223:9000/sms/sendCode",
+                url:IPORT+"/sms/sendCode",
                 params:{
                     "phone":userPhone,
                 }

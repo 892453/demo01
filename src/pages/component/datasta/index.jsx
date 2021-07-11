@@ -8,7 +8,7 @@ import Wifi from "./wifi"
 export default function DataSta(){
     return (
         <div>
-            <Row gutter={[0,16]} style={{marginTop:"20px"}}>
+            <Row gutter={[0,16]} justify="center" style={{marginTop:"20px"}}>
                 <Col span={24}>
                     <div id="datasta"><Concern /></div>
                 </Col>

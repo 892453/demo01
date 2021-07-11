@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Breadcrumb, Popover, Row, Col, Button, Drawer, Form, Input, Select, DatePicker } from 'antd';
+import React, { useEffect, useState, useContext } from 'react'
+import { Breadcrumb, Popover, Row, Col, Button, Drawer, Form, Input, Select } from 'antd';
 import { Card, Image } from 'antd';
 
 import {
@@ -10,7 +10,9 @@ import {
 } from '@ant-design/icons';
 import "./infCourse.css"
 import Axios from 'axios';
-import Qs from 'qs'
+import { IPORT } from "../../static/ipconfig"
+import { CourseContext, UPDATE_COURSEID } from '../course/courseid';
+
 
 const { Option } = Select;
 
@@ -19,21 +21,25 @@ const { Option } = Select;
 */
 
 function Courseinf() {
+    const { dispatch } = useContext(CourseContext)
 
     const [coursedata, setcoursedata] = useState([])   //***注意这里的[]
     const [courseinform, setcourseinform] = useState({})
     const [videoaddr, setvideoaddr] = useState(""); //获取视频的地址
     const [fileurl, setfileurl] = useState([]);
-    const [avator,setavator] = useState("");
+    const [avator, setavator] = useState("");
     const [visible, setvisible] = useState(false)
 
     useEffect(() => {
         //get请求【课程信息内容】
-        Axios.get("http://120.27.236.223:9000/course/list")
+        Axios.get(IPORT+"/course/list")
             .then((res) => {
                 let course = res.data.result
-                console.log("返回的courese:",res.data.result)
-                setcoursedata(course)
+                console.log("返回的courese:", course)
+                if (course != undefined) {
+                    setcoursedata(course)
+                }
+
             })
     }, []);   //第二参数[]内是要监听的参数，没有要监听的参数时，setcoursedata()函数执行时不会触发useEffect()函数
 
@@ -47,47 +53,48 @@ function Courseinf() {
     };
 
     function clickimg(id) {
-        //console.log("查看课程id" + id)
+        console.log("查看课程id" + id)
+        dispatch({ type: UPDATE_COURSEID, courseid: id })
         //post请求【课程详细信息内容】
-        Axios({
-            method: 'get',
-            url: "http://120.27.236.223:9000/course/info/"+id,
-            
-        }).then((res) => {
-             console.log(id+"课程信息：",res.data.result)
-            let coursedetail = res.data.result
-            if(coursedetail.courseAvatarPath==null){
-                setavator("https://p.ananas.chaoxing.com/star3/origin/6ce77a10dd3268daa7ba6c93e5e76459.jpg")
-            }
-            else{
-                setavator(coursedetail.courseAvatarPath)
-            }
-            if(coursedetail.courseFilePath==null){
-                setvideoaddr("")
-                console.log("1:"+coursedetail)
-                setfileurl([])
-                console.log(fileurl)
-            }
-            else{
-                if (coursedetail.courseFilePath[0].slice(-3) === "mp4") {
-                    setvideoaddr(coursedetail.courseFilePath[0])
-                    setfileurl(coursedetail.courseFilePath.slice(1))
-                }
-                else {
-                    setvideoaddr("")
-                    setfileurl(coursedetail.courseFilePath)
-                }
+        // Axios({
+        //     method: 'get',
+        //     url: IPORT + "/course/info/" + id,
 
-            }
-            
-            coursedetail.courseId = id
-            //console.log("返回的课程详情", coursedetail)
-            setcourseinform(coursedetail)
-            document.getElementById("courseinfodetail").style.display = 'block';
-            if (document.getElementById("courseinfodetail").style.display = 'block')
-                //console.log("页面展示")
-                document.getElementsByClassName("courseinfo")[0].style.display = "none";
-        })
+        // }).then((res) => {
+        //     console.log(id + "课程信息：", res.data.result)
+        //     let coursedetail = res.data.result
+        //     if (coursedetail.courseAvatarPath == null) {
+        //         setavator("https://p.ananas.chaoxing.com/star3/origin/6ce77a10dd3268daa7ba6c93e5e76459.jpg")
+        //     }
+        //     else {
+        //         setavator(coursedetail.courseAvatarPath)
+        //     }
+        //     if (coursedetail.courseFilePath == null) {
+        //         setvideoaddr("")
+        //         console.log("1:" + coursedetail)
+        //         setfileurl([])
+        //         console.log(fileurl)
+        //     }
+        //     else {
+        //         if (coursedetail.courseFilePath[0].slice(-3) === "mp4") {
+        //             setvideoaddr(coursedetail.courseFilePath[0])
+        //             setfileurl(coursedetail.courseFilePath.slice(1))
+        //         }
+        //         else {
+        //             setvideoaddr("")
+        //             setfileurl(coursedetail.courseFilePath)
+        //         }
+
+        //     }
+
+        //     coursedetail.courseId = id
+        //     //console.log("返回的课程详情", coursedetail)
+        //     setcourseinform(coursedetail)
+        //     document.getElementById("courseinfodetail").style.display = 'block';
+        //     if (document.getElementById("courseinfodetail").style.display = 'block')
+        //         //console.log("页面展示")
+        //         document.getElementsByClassName("courseinfo")[0].style.display = "none";
+        // })
     }
     function closeinfodetail() {
         console.log("关闭查看课程详细信息")
@@ -103,7 +110,7 @@ function Courseinf() {
                     <HighlightOutlined />
                     <span>
                         课程管理
-                            </span>
+                    </span>
                 </Breadcrumb.Item>
 
                 <Breadcrumb.Item>
@@ -146,7 +153,7 @@ function Courseinf() {
 
                             <div style={{ padding: '10px', paddingLeft: '20px' }}>
                                 课程描述：
-                                    <Card bordered={false}>
+                                <Card bordered={false}>
                                     <p>{courseinform.courseIntroduction}</p>
                                 </Card>
                             </div>
@@ -224,111 +231,111 @@ function Courseinf() {
                             关闭
                         </Button>
                         <Button onClick={onClose} type="primary">
-                           提交
+                            提交
                         </Button>
                     </div>
                 }
             >
                 <Form layout="vertical" hideRequiredMark>
 
-                            <Form.Item
-                                name="q1"
-                                label="1.C语言源程序的基本单位是什么？" //函数
-                                rules={[{ required: true, message: 'Please enter your answer' }]}
-                            >
-                                <Input placeholder="Please enter your answer" />
-                            </Form.Item>
-                            <Form.Item
-                                name="q2"
-                                label="2.假设变量a,b均为整型，表达式(a=5;b=2;a>b?a++:b++;a+b)的值是？"  //8
-                                rules={[{ required: true, message: 'Please enter your answer' }]}
-                            >
-                                <Input placeholder="Please enter your answer" />
-                            </Form.Item>
-                            <Form.Item
-                                name="q3"
-                                label="3.在c语言程序中，以下说法正确的是？" //B
-                                rules={[{ required: true, message: 'Please enter your answer' }]}
-                            >
-                                <Select placeholder="Please select an answer">  
-                                    <Option value="a">A 函数的定义可以嵌套，但函数的调用不可以嵌套</Option>
-                                    <Option value="b">B 函数的定义不可以嵌套，但函数的调用可以嵌套</Option>  
-                                    <Option value="c">C 函数的定义和函数的调用都不可以嵌套</Option>
-                                    <Option value="d">D 函数的定义和函数的调用都可以嵌套</Option>
-                                </Select>
-                            </Form.Item>
-                            <Form.Item
-                                name="q4"
-                                label="4.以下对二维数组a的声明正确的是？" //B
-                                rules={[{ required: true, message: 'Please enter user name' }]}
-                            >
-                                <Select placeholder="Please select an answer">  
-                                    <Option value="a">A int a[3][]</Option>
-                                    <Option value="b">B int a(3,4)</Option>  
-                                    <Option value="c">C int a[1][4]</Option>
-                                    <Option value="d">D int a(3)(4)</Option>
-                                </Select>
-                            </Form.Item>
-                            <Form.Item
-                                name="q5"
-                                label="5.算法的计算量的大小称为计算的？" //B
-                                rules={[{ required: true, message: 'Please enter user name' }]}
-                            >
-                                <Select placeholder="Please select an answer">  
-                                    <Option value="a">A 效率</Option>
-                                    <Option value="b">B 复杂性</Option>  
-                                    <Option value="c">C 现实性</Option>
-                                    <Option value="d">D 难度</Option>
-                                </Select>
-                            </Form.Item>
-                            <Form.Item
-                                name="q6"
-                                label="6.以下哪个数据结构不是多型数据类型？" //B
-                                rules={[{ required: true, message: 'Please enter user name' }]}
-                            >
-                                <Select placeholder="Please select an answer">  
-                                    <Option value="a">A 栈</Option>
-                                    <Option value="b">B 广义表</Option>  
-                                    <Option value="c">C 有向图</Option>
-                                    <Option value="d">D 字符串</Option>
-                                </Select>
-                            </Form.Item>
-                            <Form.Item
-                                name="q7"
-                                label="7.以下属于逻辑结构的是？" //B
-                                rules={[{ required: true, message: 'Please enter user name' }]}
-                            >
-                                <Select placeholder="Please select an answer">  
-                                    <Option value="a">A 顺序表</Option>
-                                    <Option value="b">B 哈希表</Option>  
-                                    <Option value="c">C 有序表</Option>
-                                    <Option value="d">D 单链表</Option>
-                                </Select>
-                            </Form.Item>
-                            <Form.Item
-                                name="q8"
-                                label="8.衡量一个算法好坏的标准是？" //B
-                                rules={[{ required: true, message: 'Please enter user name' }]}
-                            >
-                                <Select placeholder="Please select an answer">  
-                                    <Option value="a">A 运行速度快</Option>
-                                    <Option value="b">B 占用空间少</Option>  
-                                    <Option value="c">C 时间复杂度低</Option>
-                                    <Option value="d">D 代码短</Option>
-                                </Select>
-                            </Form.Item>
-                            <Form.Item
-                                name="q9"
-                                label="9.什么叫做二叉树？"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'please enter answer description',
-                                    },
-                                ]}
-                            >
-                                <Input.TextArea rows={4} placeholder="please enter answer description" />
-                            </Form.Item>
+                    <Form.Item
+                        name="q1"
+                        label="1.C语言源程序的基本单位是什么？" //函数
+                        rules={[{ required: true, message: 'Please enter your answer' }]}
+                    >
+                        <Input placeholder="Please enter your answer" />
+                    </Form.Item>
+                    <Form.Item
+                        name="q2"
+                        label="2.假设变量a,b均为整型，表达式(a=5;b=2;a>b?a++:b++;a+b)的值是？"  //8
+                        rules={[{ required: true, message: 'Please enter your answer' }]}
+                    >
+                        <Input placeholder="Please enter your answer" />
+                    </Form.Item>
+                    <Form.Item
+                        name="q3"
+                        label="3.在c语言程序中，以下说法正确的是？" //B
+                        rules={[{ required: true, message: 'Please enter your answer' }]}
+                    >
+                        <Select placeholder="Please select an answer">
+                            <Option value="a">A 函数的定义可以嵌套，但函数的调用不可以嵌套</Option>
+                            <Option value="b">B 函数的定义不可以嵌套，但函数的调用可以嵌套</Option>
+                            <Option value="c">C 函数的定义和函数的调用都不可以嵌套</Option>
+                            <Option value="d">D 函数的定义和函数的调用都可以嵌套</Option>
+                        </Select>
+                    </Form.Item>
+                    <Form.Item
+                        name="q4"
+                        label="4.以下对二维数组a的声明正确的是？" //B
+                        rules={[{ required: true, message: 'Please enter user name' }]}
+                    >
+                        <Select placeholder="Please select an answer">
+                            <Option value="a">A int a[3][]</Option>
+                            <Option value="b">B int a(3,4)</Option>
+                            <Option value="c">C int a[1][4]</Option>
+                            <Option value="d">D int a(3)(4)</Option>
+                        </Select>
+                    </Form.Item>
+                    <Form.Item
+                        name="q5"
+                        label="5.算法的计算量的大小称为计算的？" //B
+                        rules={[{ required: true, message: 'Please enter user name' }]}
+                    >
+                        <Select placeholder="Please select an answer">
+                            <Option value="a">A 效率</Option>
+                            <Option value="b">B 复杂性</Option>
+                            <Option value="c">C 现实性</Option>
+                            <Option value="d">D 难度</Option>
+                        </Select>
+                    </Form.Item>
+                    <Form.Item
+                        name="q6"
+                        label="6.以下哪个数据结构不是多型数据类型？" //B
+                        rules={[{ required: true, message: 'Please enter user name' }]}
+                    >
+                        <Select placeholder="Please select an answer">
+                            <Option value="a">A 栈</Option>
+                            <Option value="b">B 广义表</Option>
+                            <Option value="c">C 有向图</Option>
+                            <Option value="d">D 字符串</Option>
+                        </Select>
+                    </Form.Item>
+                    <Form.Item
+                        name="q7"
+                        label="7.以下属于逻辑结构的是？" //B
+                        rules={[{ required: true, message: 'Please enter user name' }]}
+                    >
+                        <Select placeholder="Please select an answer">
+                            <Option value="a">A 顺序表</Option>
+                            <Option value="b">B 哈希表</Option>
+                            <Option value="c">C 有序表</Option>
+                            <Option value="d">D 单链表</Option>
+                        </Select>
+                    </Form.Item>
+                    <Form.Item
+                        name="q8"
+                        label="8.衡量一个算法好坏的标准是？" //B
+                        rules={[{ required: true, message: 'Please enter user name' }]}
+                    >
+                        <Select placeholder="Please select an answer">
+                            <Option value="a">A 运行速度快</Option>
+                            <Option value="b">B 占用空间少</Option>
+                            <Option value="c">C 时间复杂度低</Option>
+                            <Option value="d">D 代码短</Option>
+                        </Select>
+                    </Form.Item>
+                    <Form.Item
+                        name="q9"
+                        label="9.什么叫做二叉树？"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'please enter answer description',
+                            },
+                        ]}
+                    >
+                        <Input.TextArea rows={4} placeholder="please enter answer description" />
+                    </Form.Item>
                 </Form>
             </Drawer>
         </div>

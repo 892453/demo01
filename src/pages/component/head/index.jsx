@@ -1,9 +1,8 @@
 import axios from 'axios'
-import React,{useState,useEffect,useCallback,useRef} from 'react'
+import React,{useEffect,useCallback,useRef} from 'react'
 import * as THREE from "three"
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader"
-import Websocket from 'react-websocket';
-
+import { IPORT } from "../../static/ipconfig"
 
 export default function Head() {
 
@@ -152,7 +151,7 @@ export default function Head() {
             item.rotation.x=a*1/180*Math.PI
             item.rotation.y=b*1/180*Math.PI
             item.rotation.z=c*1/180*Math.PI
-            console.log(item.rotation.x,item.rotation.y,item.rotation.z) 
+           // console.log(item.rotation.x,item.rotation.y,item.rotation.z) 
           
         })
 
@@ -186,25 +185,18 @@ export default function Head() {
         //create3dword()        //3维字
         loadermodel()       //加载模型
        
-
-     
-
-       /** 发送axios请求获取头部姿态数据
-        *  现在修改为使用websocket的onmessage()函数来请求数据，然后用renderscene()函数修改头部姿态
-            axios.get("/headrotate.json").then((res)=>{
-            var num=res.data.length
-            var i=0
-            var int=setInterval(() => {
-                renderScene(res.data[i][0],res.data[i][2],res.data[i][1]);
-                i++;
-                if(i===num){
-                    clearInterval(int)
-                }
-                
-            },1000/10)
-        
-        
-        }) */
+        // 发送axios请求获取头部姿态数据
+        var int;
+        axios.defaults.withCredentials = true; //配置为true
+        axios.get(IPORT+"/attentionresult/getAttentionResultByUserID").then((res)=>{
+            if(res.data.result!=undefined){
+                let rotate=res.data.result.algorithmDataDto.head_coordinate;
+                console.log("rotate:",rotate)
+                int=setInterval(() => {
+                    renderScene(rotate[0],rotate[1],rotate[2]);
+                },3000)
+            }
+        }) 
        
 
         document.addEventListener('resize',setView)
@@ -223,38 +215,14 @@ export default function Head() {
             })
             Render.dispose()                    //销毁【渲染器】
             Scene.dispose()                     //销毁【场景】
-            //clearInterval(int)
+            clearInterval(int)
         }
     },[])
 
-    function onmessage(e){
-        //console.log(e)
-        const tmp=eval(e)
-        renderScene(tmp[0],tmp[2],tmp[1])
-    }
-    function onopen(){
-        console.log('websocket 连接成功');    
-    }
-    function onclose(){
-        console.log("websocket 连接关闭");
-    }
-    function onerror(e){
-        console.log("发生错误"+e)
-    }
+   
 
     return(
         <div ref={Body} style={{width:"100%",height:"292px",paddingTop:"38px"}} onMouseDown={dowm} onMouseMove={move} onMouseUp={up}>
-
-            <Websocket
-                url='ws://127.0.0.1:5678'
-                onMessage={onmessage}
-                onOpen={onopen}
-                onClose={onclose}
-                onError={onerror}
-                reconnect={true}
-                debug={true}
-            >
-            </Websocket>
         </div>
     )
     

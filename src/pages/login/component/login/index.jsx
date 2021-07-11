@@ -5,6 +5,7 @@ import axios from "axios"
 import Qs from 'qs'
 import { useHistory } from 'react-router-dom';  //实现登录成功后的页面跳转
 import cookie from 'react-cookies'              //存储登录信息到cookie
+import {IPORT} from "../../../static/ipconfig"
 
 function Loginn() {
 
@@ -30,10 +31,13 @@ function Loginn() {
       axios({	
         method:'post',
         //url:"http://www.aifixerpic.icu/upload/login",
-        url:"http://120.27.236.223:9000//login/login",
+        url:IPORT+"/login/login",
         data:{
             "loginAccount": values.username,
             "password":values.password,
+            "classroomId":"1",
+            "column":1,
+            "row":1,
         },
         header:{
           'Content-Type':'application/json'  //如果写成contentType会报错

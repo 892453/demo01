@@ -10,14 +10,17 @@ import {
 import "./addcourse.css"
 import cookie from 'react-cookies'
 import axios from 'axios';
-//import Forbid from "../../forbid"
+import {IPORT} from "../../static/ipconfig"
 
 
 
 export default function AddCourse() {
 
+    const URL=IPORT+"/course/uploadCoursePic"
+
     useEffect(()=>{
         let role=cookie.load("role")
+
         //console.log("判断角色："+role)
         if(role!=="true"){
             document.getElementsByClassName("add")[0].style.display="none"
@@ -44,7 +47,7 @@ export default function AddCourse() {
         console.log(values.fengmian[0].toString())
        axios({
            method:"POST",
-           url:"http://120.27.236.223:9000/course/save",
+           url:IPORT+"/course/save",
            data:{
                //"courseId":"",
                "courseName":values.coursename,
@@ -61,7 +64,7 @@ export default function AddCourse() {
            if(res.data.success===true){
                 message.success("课程上传成功啦！可以在课程列表里查看")
            }else{
-                message.error("课程上传失败！")
+                message.error("课程上传失败！") 
            }
        })
        
@@ -77,7 +80,7 @@ export default function AddCourse() {
     const props = {
         name: 'files',
         multiple: true,     //支持一次性上传多个文件
-        action: 'http://120.27.236.223:9000/course/uploadFile',
+        action: IPORT+'/course/uploadFile',
         onChange(info) {
             const { status } = info.file;
             // const {resp}=info.file.response
@@ -102,9 +105,9 @@ export default function AddCourse() {
     function uploadfengmian(info) {
         const { status } = info.file;
         fengmianimg.splice(0,fengmianimg.length)    //清空数组元素,使用 fengmianimg=[] 清空数组时不行
-        if (status === 'done') {
+        if (status === 'done' ) {
             message.success("done: " + `${info.file.name} 封面文件上传成功...`);
-            //console.log("封面文件respone："+info.file.response.result[0]);
+            console.log(info.file);
             
             fengmianimg.push(info.file.response.result[0])
             console.log("fengmianimg::", fengmianimg)
@@ -208,13 +211,14 @@ export default function AddCourse() {
                         // initialValue={fengmianimg}
                         >
                             <Upload
-                                //action="http://www.aifixerpic.icu/upload/upload_img"
-                                action="http://120.27.236.223:9000/course/uploadCoursePic"
+                                
+                                action={URL}
                                 name="files"
                                 listType="picture"
                                 maxCount={1}
                                 beforeUpload={beforeUpload}
                                 onChange={uploadfengmian}
+                                withCredentials={true}
                             >
                                 {/* <Upload
                         {...propsfengmian}

@@ -1,0 +1,45 @@
+
+/* 父元素------所有课程界面 */
+.allcourseinfo{
+    position: relative;
+    width: 100%;
+    /* height: 700px; */
+    overflow: auto;     
+    /* overflow: auto;     让子元素决定父元素的高度 */
+}
+
+.imgstyle{
+   /* 图片的高度不需要定义，只需要宽度占满整个列col即可 */
+    width:100%;
+    display:block;
+}
+
+.aaa{
+    overflow: auto;
+}
+.dlstyle{
+    width:100%;
+    text-align:center;
+    background: rgb(216, 213, 213);
+    padding: 15px;
+    font-size: 16px;
+    overflow:auto;
+}
+
+.ant-layout, .ant-layout * {
+    overflow: auto;
+}
+
+/* 子元素绝对定位--------课程详情界面*/
+#courseinfodetail{
+    display: none;
+    /* background:  #052c50;
+    position: absolute;
+    top: 8%;
+    left: 0%;
+    width: 100%;
+    height: 600px; */
+}
+/* #courselink:hover   {color:red;text-decoration: underline;}
+#courselink:link    {color:rgb(1, 1, 17)!important;}
+#courselink:visited {color:blue;} */
